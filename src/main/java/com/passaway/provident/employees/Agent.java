@@ -81,10 +81,6 @@ public class Agent {
         return policies;
     }
 
-    public void setPolicies(List<Policy> policies) {
-        this.policies = policies;
-    }
-
     public double getPay() {
         return pay.calculate(this);
     }

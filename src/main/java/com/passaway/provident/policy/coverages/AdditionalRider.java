@@ -21,69 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.riders;
+package com.passaway.provident.policy.coverages;
 
-import com.passaway.provident.client.Client;
-import com.passaway.provident.employees.Agent;
 import com.passaway.provident.policy.*;
-import com.passaway.provident.policy.status.Status;
-
-import java.util.*;
 
 
-public abstract class Rider implements Policy {
+public class AdditionalRider extends Rider {
     
-    protected Policy policy;
-
-    
-    public Rider(Policy policy) {
-        this.policy = policy;
-    }
-
-
-    @Override
-    public double claim(String context) {
-        return policy.claim(context);
-    }
-
-    @Override
-    public Premium calculate() {
-        return policy.calculate();
-    }
-
-    @Override
-    public UUID getID() {
-        return policy.getID();
-    }
-
-    @Override
-    public Agent getAgent() {
-        return policy.getAgent();
-    }
-
-    @Override
-    public Client getClient() {
-        return policy.getClient();
+    public AdditionalRider(Coverage coverage) {
+        super(coverage);
     }
     
-    @Override
-    public PolicyType getType() {
-        return policy.getType();
-    }
     
     @Override
-    public List<Premium> getPremiums() {
-        return policy.getPremiums();
+    public Payout claim(Policy policy, String context) {
+        Payout payout = coverage.claim(policy, context);
+        System.out.println("Additional claim here");
+        payout.setAmount(payout.getAmount() + 1);
+        
+        return payout;
     }
 
     @Override
-    public Status getStatus() {
-        return policy.getStatus();
-    }
-
-    @Override
-    public void setStatus(Status status) {
-        policy.setStatus(status);
+    public void charge(Policy policy) {
+        coverage.charge(policy);
+        System.out.println("Additional create here");
+        policy.setDue(policy.getDue() + 1);
     }
     
 }

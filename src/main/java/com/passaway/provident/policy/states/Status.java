@@ -21,53 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.client;
+package com.passaway.provident.policy.states;
 
-import com.passaway.provident.policy.Policy;
+import com.passaway.provident.policy.*;
+import com.passaway.provident.policy.coverages.Coverage;
 
-import java.util.*;
 
-
-public class Client {
+public abstract class Status {
     
-    private UUID id;
-    private String name;
-    private String address;
-    private String email;
-    private List<Policy> policies;
+    private String information;
     
     
-    public Client(String name, String address, String email) {
-        this(UUID.randomUUID(), name, address, email, new ArrayList<>());
+    public Status(String information) {
+        this.information = information;
     }
     
-    public Client(UUID id, String name, String address, String email, List<Policy> policies) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.email = email;
-        this.policies = policies;
-    }
-
     
-    public UUID getID() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getAddress() {
-        return address;
+    public abstract void pay(Policy policy, Payment payment);
+    
+    public abstract void charge(Policy policy, Coverage coverage);
+        
+    public abstract Payout claim(Policy policy, Coverage coverage, String context);
+    
+    
+    public void cancelledByAgent(Policy policy) {
+        policy.setStatus(Terminated.AGENT);
     }
     
-    public String getEmail() {
-        return email;
+    public void cancelledByClient(Policy policy) {
+        policy.setStatus(Terminated.CLIENT);
     }
-
-    public List<Policy> getPolicies() {
-        return policies;
+    
+    public String getInformation() {
+        return information;
     }
     
 }

@@ -21,38 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.policies;
+package com.passaway.provident.policy.coverages;
 
-import com.passaway.provident.client.Client;
-import com.passaway.provident.employees.Agent;
 import com.passaway.provident.policy.*;
-import com.passaway.provident.policy.status.Status;
-
-import java.util.*;
 
 
-public class MedicalPolicy extends AbstractPolicy {
-
-    public MedicalPolicy(UUID id, Agent agent, Client client, List<Premium> premiums, Status status) {
-        super(id, agent, client, premiums, status);
-    }
-
+public interface Coverage {
     
-    @Override
-    public double claimPolicy(String context) {
-        System.out.println("Medical claim");
-        return 0;
-    }
-
-    @Override
-    public Premium calculatePremium() {
-        System.out.println("Create medical premium");
-        return new Premium(0);
-    }
-
-    @Override
-    public PolicyType getType() {
-        return PolicyType.MEDICAL;
-    }
+    public Payout claim(Policy policy, String context);
+    
+    public void charge(Policy policy);
+    
+    public boolean isPeriodic();
     
 }

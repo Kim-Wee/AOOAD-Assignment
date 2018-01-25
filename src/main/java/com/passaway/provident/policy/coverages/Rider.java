@@ -21,30 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.riders;
+package com.passaway.provident.policy.coverages;
 
 import com.passaway.provident.policy.*;
 
 
-public class AdditionalRider extends Rider {
+public abstract class Rider implements Coverage {
     
-    public AdditionalRider(Policy policy) {
-        super(policy);
+    protected Coverage coverage;
+    
+    
+    public Rider(Coverage coverage) {
+        this.coverage = coverage;
     }
     
-    @Override
-    public double claim(String context) {
-        double amount = policy.claim(context);
-        System.out.print("Insert fancy additional rider claim modifier here");
-        return amount + 1;
-    }
     
     @Override
-    public Premium calculate() {
-        Premium premium = policy.calculate();
-        System.out.print("Insert fancy additional rider premium modifier here");
-        premium.setAmount(premium.getAmount() + 10);
-        return premium;
+    public Payout claim(Policy policy, String context) {
+        return coverage.claim(policy, context);
+    }
+
+    @Override
+    public void charge(Policy policy) {
+        coverage.charge(policy);
+    }
+
+    @Override
+    public boolean isPeriodic() {
+        return coverage.isPeriodic();
     }
     
 }

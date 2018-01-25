@@ -25,30 +25,171 @@ package com.passaway.provident.policy;
 
 import com.passaway.provident.client.Client;
 import com.passaway.provident.employees.Agent;
-import com.passaway.provident.policy.status.Status;
+import com.passaway.provident.policy.coverages.Coverage;
+import com.passaway.provident.policy.states.*;
 
 import java.util.*;
 
 
-public interface Policy {
+public class Policy {
     
-    public double claim(String context);
+    private UUID id;
+    private Agent agent;
+    private Client client;
+    private PolicyType type;
+    private Coverage coverage;
+    private Status status;
+    private List<Payment> payments;
+    private double due;
+    private boolean periodic;
     
-    public Premium calculate();
+    
+    public Policy(Agent agent, Client client, PolicyType type, Coverage coverage, double due, boolean periodic) {
+        this(UUID.randomUUID(), agent, client, type, coverage, new Active(), new ArrayList<>(), due, periodic);
+    }
+    
+    public Policy(UUID id, Agent agent, Client client, PolicyType type, Coverage coverage, Status status, List<Payment> payments, double due, boolean periodic) {
+        this.id = id;
+        this.agent = agent;
+        this.client = client;
+        this.type = type;
+        this.coverage = coverage;
+        this.status = status;
+        this.payments = payments;
+        this.due = due;
+        this.periodic = periodic;
+    }
+    
+    
+    public void pay(Payment payment) {
+        status.pay(this, payment);
+    }
     
         
-    public UUID getID();
+    public void charge() {
+        status.charge(this, coverage);
+    }
     
-    public Agent getAgent();
+    public Payout claim(String context) {
+        return status.claim(this, coverage, context);
+    }
+        
+    public void cancelledByAgent() {
+        status.cancelledByAgent(this);
+    }
     
-    public Client getClient();
+    public void cancelledByClient() {
+        status.cancelledByClient(this);
+    }
+
     
-    public PolicyType getType();
+    public UUID getID() {
+        return id;
+    }
+
+    public Agent getAgent() {
+        return agent;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public PolicyType getType() {
+        return type;
+    }
+
+    public Coverage getCoverage() {
+        return coverage;
+    }
     
-    public List<Premium> getPremiums();
+    public void setCoverage(Coverage coverage) {
+        this.coverage = coverage;
+    }
     
-    public Status getStatus();
+    public Status getStatus() {
+        return status;
+    }
     
-    public void setStatus(Status status);
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+        
+    public boolean isPaid() {
+        return due <= 0;
+    }
+    
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public double getDue() {
+        return due;
+    }
+
+    public void setDue(double due) {
+        this.due = due;
+    }
+    
+    public boolean isPeriodic() {
+        return periodic;
+    }
+    
+    
+    public static Builder builder() {
+        return new Builder(new Policy(null, null, null, null, 0, false));
+    }
+    
+    public static class Builder {
+        
+        private Policy policy;
+        
+        
+        private Builder(Policy policy) {
+            this.policy = policy;
+        }
+        
+        
+        public Builder agent(Agent agent) {
+            policy.agent = agent;
+            return this;
+        }
+        
+        public Builder client(Client client) {
+            policy.client = client;
+            return this;
+        }
+        
+        public Builder type(PolicyType type) {
+            policy.type = type;
+            return this;
+        }
+        
+        public Builder coverage(Coverage coverage) {
+            policy.coverage = coverage;
+            return this;
+        }
+        
+        public Builder status(Status status) {
+            policy.status = status;
+            return this;
+        }
+        
+        public Builder due(double due) {
+            policy.due = due;
+            return this;
+        }
+        
+        public Builder periodic(boolean periodic) {
+            policy.periodic = periodic;
+            return this;
+        }
+        
+        
+        public Policy build() {
+            return policy;
+        }
+        
+    }
     
 }

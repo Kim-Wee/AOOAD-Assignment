@@ -21,16 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.status;
+package com.passaway.provident.policy.states;
 
 import com.passaway.provident.policy.*;
-import com.passaway.provident.policy.policies.AbstractPolicy;
+import com.passaway.provident.policy.coverages.Coverage;
+
+import static com.passaway.provident.policy.Payout.NONE;
 
 
-public interface Status {
+public class Lapsed extends Status {
     
-    public double claim(AbstractPolicy policy, String context);
+    public Lapsed() {
+        this("This policy is currently lapsed");
+    }
     
-    public Premium calculate(AbstractPolicy policy);
+    public Lapsed(String information) {
+        super(information);
+    }
+
+    @Override
+    public void pay(Policy policy, Payment payment) {
+        policy.setDue(policy.getDue() - payment.getAmount());
+        if (policy.getDue() <= 0) {
+            policy.setStatus(new Active());
+        }
+    }
+
+    @Override
+    public void charge(Policy policy, Coverage coverage) {
+        coverage.charge(policy);
+    }
+
+    @Override
+    public Payout claim(Policy policy, Coverage coverage, String context) {
+        System.out.println("Policy canot be claimed while lapsed");
+        return NONE;
+    }
     
 }

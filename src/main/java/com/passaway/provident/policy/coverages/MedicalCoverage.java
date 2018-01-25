@@ -21,34 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy;
+package com.passaway.provident.policy.coverages;
+
+import com.passaway.provident.policy.*;
 
 
-public class Premium {
-    
-    private double amount;
-    private Payment payment;
+public class MedicalCoverage implements Coverage {
 
-    
-    public Premium(double amount) {
-        this.amount = amount;
-    }
-    
-    
-    public void pay(Payment payment) {
-        this.payment = payment;
-    }
-    
-    public boolean isPaid() {
-        return payment != null && amount - payment.getAmount() != 0;
+    @Override
+    public Payout claim(Policy policy, String context) {
+        System.out.println("Claim medical claim here");
+        return new Payout(10, true);
     }
 
-    public double getAmount() {
-        return amount;
+    @Override
+    public void charge(Policy policy) {
+        System.out.println("Create medical premium here");
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    @Override
+    public boolean isPeriodic() {
+        return true;
     }
     
 }

@@ -21,53 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.client;
-
-import com.passaway.provident.policy.Policy;
-
-import java.util.*;
+package com.passaway.provident.policy;
 
 
-public class Client {
+public class Payout {
     
-    private UUID id;
-    private String name;
-    private String address;
-    private String email;
-    private List<Policy> policies;
+    public static final Payout NONE = new Payout(0, true) {
+        @Override
+        public void setAmount(double amount) {
+            
+        }
+    };
+    
+    private double amount;
+    private boolean complete;
     
     
-    public Client(String name, String address, String email) {
-        this(UUID.randomUUID(), name, address, email, new ArrayList<>());
+    public Payout(double amount, boolean complete) {
+        this.amount = amount;
+        this.complete = complete;
     }
     
-    public Client(UUID id, String name, String address, String email, List<Policy> policies) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.email = email;
-        this.policies = policies;
-    }
-
     
-    public UUID getID() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getAddress() {
-        return address;
+    public double getAmount() {
+        return amount;
     }
     
-    public String getEmail() {
-        return email;
-    }
-
-    public List<Policy> getPolicies() {
-        return policies;
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }    
+    
+    public boolean isCompletelyPaidOut() {
+        return complete;
     }
     
 }

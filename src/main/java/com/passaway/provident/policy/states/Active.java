@@ -21,37 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.policies;
+package com.passaway.provident.policy.states;
 
-import com.passaway.provident.client.Client;
-import com.passaway.provident.employees.Agent;
 import com.passaway.provident.policy.*;
-import com.passaway.provident.policy.status.Status;
-
-import java.util.*;
+import com.passaway.provident.policy.coverages.Coverage;
 
 
-public class TravelPolicy extends AbstractPolicy {
-
-    public TravelPolicy(UUID id, Agent agent, Client client, List<Premium> premiums, Status status) {
-        super(id, agent, client, premiums, status);
+public class Active extends Status {
+    
+    public Active() {
+        this("This policy is current active");
+    }
+    
+    public Active(String information) {
+        super(information);
+    }
+    
+    
+    @Override
+    public void pay(Policy policy, Payment payment) {
+        policy.setDue(policy.getDue() - payment.getAmount());
+        policy.getPayments().add(payment);
     }
 
     @Override
-    public double claimPolicy(String context) {
-        System.out.println("Travel claim");
-        return 0;
+    public Payout claim(Policy policy, Coverage coverage, String context) {
+        Payout payout = coverage.claim(policy, context);
+        if (payout.isCompletelyPaidOut()) {
+            policy.setStatus(Terminated.PAID_OUT);
+        }
+        
+        return payout;
     }
 
     @Override
-    public Premium calculatePremium() {
-        System.out.println("Create travel premium");
-        return new Premium(0);
-    }
-
-    @Override
-    public PolicyType getType() {
-        return PolicyType.TRAVEL;
+    public void charge(Policy policy, Coverage coverage) {
+        if (policy.getDue() > 0) {
+            policy.setStatus(new Lapsed());
+        }
+       coverage.charge(policy);
     }
     
 }

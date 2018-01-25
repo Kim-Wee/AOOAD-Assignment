@@ -21,53 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.client;
+package com.passaway.provident.policy.coverages;
 
-import com.passaway.provident.policy.Policy;
-
-import java.util.*;
+import com.passaway.provident.policy.*;
 
 
-public class Client {
-    
-    private UUID id;
-    private String name;
-    private String address;
-    private String email;
-    private List<Policy> policies;
-    
-    
-    public Client(String name, String address, String email) {
-        this(UUID.randomUUID(), name, address, email, new ArrayList<>());
-    }
-    
-    public Client(UUID id, String name, String address, String email, List<Policy> policies) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.email = email;
-        this.policies = policies;
+public class CarCoverage implements Coverage {
+
+    @Override
+    public Payout claim(Policy policy, String context) {
+        System.out.println("Claim car coverage here");
+        return new Payout(10, false);
     }
 
-    
-    public UUID getID() {
-        return id;
+    @Override
+    public void charge(Policy policy) {
+        System.out.println("Create car premium here");
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-    
-    public String getEmail() {
-        return email;
-    }
-
-    public List<Policy> getPolicies() {
-        return policies;
+    @Override
+    public boolean isPeriodic() {
+        return true;
     }
     
 }
