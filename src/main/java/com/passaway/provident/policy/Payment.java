@@ -23,32 +23,46 @@
  */
 package com.passaway.provident.policy;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
 
-public class Premium {
+
+public class Payment {    
     
+    private UUID id;
+    private Policy policy;
+    private PaymentType type;
+    private LocalDateTime date;
     private double amount;
-    private Payment payment;
-
     
-    public Premium(double amount) {
+    
+    public Payment(Policy policy, PaymentType type, double amount) {
+        this.id = UUID.randomUUID();
+        this.policy = policy;
+        this.type = type;
+        this.date = LocalDateTime.now();
         this.amount = amount;
     }
+
     
-    
-    public void pay(Payment payment) {
-        this.payment = payment;
+    public UUID getID() {
+        return id;
     }
     
-    public boolean isPaid() {
-        return payment != null && amount - payment.getAmount() != 0;
+    public Policy getPolicy() {
+        return policy;
+    }
+
+    public PaymentType getType() {
+        return type;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
     }
 
     public double getAmount() {
         return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
     }
     
 }

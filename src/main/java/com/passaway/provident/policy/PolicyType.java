@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.client;
+package com.passaway.provident.policy;
 
 
-public enum PaymentType {
+public enum PolicyType {
     
-    CHEQUE, CREDIT_CARD, NONE
+    CAR, MEDICAL, TRAVEL
     
 }

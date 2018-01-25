@@ -24,31 +24,8 @@
 package com.passaway.provident.policy;
 
 
-public class Premium {
+public enum PaymentType {
     
-    private double amount;
-    private Payment payment;
-
-    
-    public Premium(double amount) {
-        this.amount = amount;
-    }
-    
-    
-    public void pay(Payment payment) {
-        this.payment = payment;
-    }
-    
-    public boolean isPaid() {
-        return payment != null && amount - payment.getAmount() != 0;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
+    CHEQUE, CREDIT_CARD
     
 }

@@ -23,7 +23,14 @@
  */
 package com.passaway.provident.policy.status;
 
+import com.passaway.provident.policy.*;
+import com.passaway.provident.policy.policies.AbstractPolicy;
+
 
 public interface Status {
+    
+    public double claim(AbstractPolicy policy, String context);
+    
+    public Premium calculate(AbstractPolicy policy);
     
 }

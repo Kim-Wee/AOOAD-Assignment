@@ -21,34 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy;
+package com.passaway.provident.policy.policies;
+
+import com.passaway.provident.client.Client;
+import com.passaway.provident.employees.Agent;
+import com.passaway.provident.policy.*;
+import com.passaway.provident.policy.status.Status;
+
+import java.util.*;
 
 
-public class Premium {
-    
-    private double amount;
-    private Payment payment;
+public class CarPolicy extends AbstractPolicy {
 
-    
-    public Premium(double amount) {
-        this.amount = amount;
-    }
-    
-    
-    public void pay(Payment payment) {
-        this.payment = payment;
-    }
-    
-    public boolean isPaid() {
-        return payment != null && amount - payment.getAmount() != 0;
+    public CarPolicy(UUID id, Agent agent, Client client, List<Premium> premiums, Status status) {
+        super(id, agent, client, premiums, status);
     }
 
-    public double getAmount() {
-        return amount;
+    
+    @Override
+    public double claimPolicy(String context) {
+        System.out.println("Car claim");
+        return 0;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    @Override
+    public Premium calculatePremium() {
+        System.out.println("Create car premium");
+        return new Premium(0);
+    }
+
+    @Override
+    public PolicyType getType() {
+        return PolicyType.CAR;
     }
     
 }

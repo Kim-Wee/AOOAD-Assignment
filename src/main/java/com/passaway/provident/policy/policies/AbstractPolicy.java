@@ -21,34 +21,77 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy;
+package com.passaway.provident.policy.policies;
 
 import com.passaway.provident.client.Client;
 import com.passaway.provident.employees.Agent;
+import com.passaway.provident.policy.*;
 import com.passaway.provident.policy.status.Status;
 
 import java.util.*;
 
 
-public interface Policy {
+public abstract class AbstractPolicy implements Policy {
     
-    public double claim(String context);
+    protected UUID id;
+    protected Agent agent;
+    protected Client client;
+    protected List<Premium> premiums;
+    protected Status status;
     
-    public Premium calculate();
     
+    public AbstractPolicy(UUID id, Agent agent, Client client, List<Premium> premiums, Status status) {
+        this.id = id;
+        this.agent = agent;
+        this.client = client;
+        this.premiums = premiums;
+        this.status = status;
+    }
+    
+    
+    @Override
+    public double claim(String context) {
+        return status.claim(this, context);
+    }
+    
+    public abstract double claimPolicy(String context);
+    
+    @Override
+    public Premium calculate() {
+        return status.calculate(this);
+    }
+    
+    public abstract Premium calculatePremium();
         
-    public UUID getID();
-    
-    public Agent getAgent();
-    
-    public Client getClient();
-    
-    public PolicyType getType();
-    
-    public List<Premium> getPremiums();
-    
-    public Status getStatus();
-    
-    public void setStatus(Status status);
+
+    @Override
+    public UUID getID() {
+        return id;
+    }
+
+    @Override
+    public Agent getAgent() {
+        return agent;
+    }
+
+    @Override
+    public Client getClient() {
+        return client;
+    }
+
+    @Override
+    public List<Premium> getPremiums() {
+        return premiums;
+    }
+
+    @Override
+    public Status getStatus() {
+        return status;
+    }
+
+    @Override
+    public void setStatus(Status status) {
+        this.status = status;
+    }
     
 }

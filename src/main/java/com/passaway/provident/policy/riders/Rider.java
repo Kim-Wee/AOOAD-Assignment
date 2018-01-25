@@ -21,10 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy;
+package com.passaway.provident.policy.riders;
 
-import com.passaway.provident.agent.Agent;
-import com.passaway.provident.client.*;
+import com.passaway.provident.client.Client;
+import com.passaway.provident.employees.Agent;
+import com.passaway.provident.policy.*;
+import com.passaway.provident.policy.status.Status;
 
 import java.util.*;
 
@@ -32,29 +34,28 @@ import java.util.*;
 public abstract class Rider implements Policy {
     
     protected Policy policy;
-    
+
     
     public Rider(Policy policy) {
         this.policy = policy;
     }
-    
-    
+
+
     @Override
-    public void pay(Payment payment) {
-        policy.pay(payment);
+    public double claim(String context) {
+        return policy.claim(context);
     }
 
     @Override
-    public void claim(Context context) {
-        policy.claim(context);
+    public Premium calculate() {
+        return policy.calculate();
     }
 
-    
     @Override
     public UUID getID() {
         return policy.getID();
     }
-    
+
     @Override
     public Agent getAgent() {
         return policy.getAgent();
@@ -63,6 +64,26 @@ public abstract class Rider implements Policy {
     @Override
     public Client getClient() {
         return policy.getClient();
+    }
+    
+    @Override
+    public PolicyType getType() {
+        return policy.getType();
+    }
+    
+    @Override
+    public List<Premium> getPremiums() {
+        return policy.getPremiums();
+    }
+
+    @Override
+    public Status getStatus() {
+        return policy.getStatus();
+    }
+
+    @Override
+    public void setStatus(Status status) {
+        policy.setStatus(status);
     }
     
 }

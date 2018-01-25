@@ -21,27 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.agent;
+package com.passaway.provident.policy.riders;
+
+import com.passaway.provident.policy.*;
 
 
-@FunctionalInterface
-public interface Pay {
+public class AdditionalRider extends Rider {
     
-    public static final Pay JUNIOR_AGENT = agent -> {
-        System.out.println("Calculate junior agent pay");
-        return 0;
-    };
+    public AdditionalRider(Policy policy) {
+        super(policy);
+    }
     
-    public static final Pay AGENT = agent -> {
-        System.out.println("Calculate agent pay");
-        return 0;
-    };
+    @Override
+    public double claim(String context) {
+        double amount = policy.claim(context);
+        System.out.print("Insert fancy additional rider claim modifier here");
+        return amount + 1;
+    }
     
-    public static final Pay SENIOR_AGENT = agent -> {
-        System.out.println("Calculate Senior agent pay");
-        return 0;
-    };
-    
-    public double calculate(Agent agent);
+    @Override
+    public Premium calculate() {
+        Premium premium = policy.calculate();
+        System.out.print("Insert fancy additional rider premium modifier here");
+        premium.setAmount(premium.getAmount() + 10);
+        return premium;
+    }
     
 }

@@ -21,46 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.client;
+package com.passaway.provident.policy.policies;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import com.passaway.provident.client.Client;
+import com.passaway.provident.employees.Agent;
+import com.passaway.provident.policy.*;
+import com.passaway.provident.policy.status.Status;
+
+import java.util.*;
 
 
-public class Payment {
-    
-    public static final Payment NONE = new Payment(PaymentType.NONE, 0);
-    
-    
-    private UUID id;
-    private PaymentType type;
-    private LocalDateTime date;
-    private double amount;
-    payment items; // TODO
-    
-    
-    public Payment(PaymentType type, double amount) {
-        this.id = UUID.randomUUID();
-        this.type = type;
-        this.date = LocalDateTime.now();
-        this.amount = amount;
+public class TravelPolicy extends AbstractPolicy {
+
+    public TravelPolicy(UUID id, Agent agent, Client client, List<Premium> premiums, Status status) {
+        super(id, agent, client, premiums, status);
     }
 
-    
-    public UUID getID() {
-        return id;
+    @Override
+    public double claimPolicy(String context) {
+        System.out.println("Travel claim");
+        return 0;
     }
 
-    public PaymentType getType() {
-        return type;
+    @Override
+    public Premium calculatePremium() {
+        System.out.println("Create travel premium");
+        return new Premium(0);
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public double getAmount() {
-        return amount;
+    @Override
+    public PolicyType getType() {
+        return PolicyType.TRAVEL;
     }
     
 }

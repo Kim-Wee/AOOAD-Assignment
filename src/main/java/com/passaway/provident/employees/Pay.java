@@ -21,12 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy;
+package com.passaway.provident.employees;
 
 
 @FunctionalInterface
-public interface Context {
+public interface Pay {
     
-    public String getReason();
+    public static final Pay JUNIOR_AGENT = agent -> {
+        System.out.println("Calculate junior agent pay");
+        return 0;
+    };
+    
+    public static final Pay AGENT = agent -> {
+        System.out.println("Calculate agent pay");
+        return 0;
+    };
+    
+    public static final Pay SENIOR_AGENT = agent -> {
+        System.out.println("Calculate Senior agent pay");
+        return 0;
+    };
+    
+    public double calculate(Agent agent);
     
 }
