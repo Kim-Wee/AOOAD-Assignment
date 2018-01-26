@@ -21,41 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.states;
+package com.passaway.provident.policy;
 
-import com.passaway.provident.policy.*;
-import com.passaway.provident.policy.coverages.Coverage;
-
-import static com.passaway.provident.policy.Payout.NONE;
+import java.util.List;
 
 
-public class Lapsed extends Status {
+public class PolicyInformation {
     
-    public Lapsed() {
-        this("This policy is currently lapsed");
-    }
+    private String termsAndConditions;
+    private String premiumInformation;
+    private String payoutInformation;
+    private List<String> riders;
     
-    public Lapsed(String information) {
-        super(information);
+    
+    public PolicyInformation(String termsAndConditions, String premiumInformation, String payoutInformation, List<String> riders) {
+        this.termsAndConditions = termsAndConditions;
+        this.premiumInformation = premiumInformation;
+        this.payoutInformation = payoutInformation;
+        this.riders = riders;
     }
 
-    @Override
-    public void pay(Policy policy, Payment payment) {
-        policy.setPremium(policy.getPremium() - payment.getAmount());
-        if (policy.getPremium() <= 0) {
-            policy.setStatus(new Active());
-        }
+    public String getTermsAndConditions() {
+        return termsAndConditions;
     }
 
-    @Override
-    public void charge(Policy policy, Coverage coverage) {
-        coverage.charge(policy);
+    public String getPremiumInformation() {
+        return premiumInformation;
     }
 
-    @Override
-    public Payout claim(Policy policy, Coverage coverage, String context) {
-        System.out.println("Policy canot be claimed while lapsed");
-        return NONE;
+    public String getPayoutInformation() {
+        return payoutInformation;
+    }
+
+    public List<String> getRiders() {
+        return riders;
     }
     
 }

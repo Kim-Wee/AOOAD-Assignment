@@ -46,7 +46,7 @@ public class AdditionalRider extends Rider {
     public void charge(Policy policy) {
         coverage.charge(policy);
         System.out.println("Additional create here");
-        policy.setDue(policy.getDue() + 1);
+        policy.setPremium(policy.getPremium() + 1);
     }
     
 }

@@ -40,15 +40,15 @@ public class Policy {
     private Coverage coverage;
     private Status status;
     private List<Payment> payments;
-    private double due;
+    private double premium;
     private boolean periodic;
     
     
-    public Policy(Agent agent, Client client, PolicyType type, Coverage coverage, double due, boolean periodic) {
-        this(UUID.randomUUID(), agent, client, type, coverage, new Active(), new ArrayList<>(), due, periodic);
+    public Policy(Agent agent, Client client, PolicyType type, Coverage coverage, double premium, boolean periodic) {
+        this(UUID.randomUUID(), agent, client, type, coverage, new Active(), new ArrayList<>(), premium, periodic);
     }
     
-    public Policy(UUID id, Agent agent, Client client, PolicyType type, Coverage coverage, Status status, List<Payment> payments, double due, boolean periodic) {
+    public Policy(UUID id, Agent agent, Client client, PolicyType type, Coverage coverage, Status status, List<Payment> payments, double premium, boolean periodic) {
         this.id = id;
         this.agent = agent;
         this.client = client;
@@ -56,7 +56,7 @@ public class Policy {
         this.coverage = coverage;
         this.status = status;
         this.payments = payments;
-        this.due = due;
+        this.premium = premium;
         this.periodic = periodic;
     }
     
@@ -116,19 +116,19 @@ public class Policy {
     }
         
     public boolean isPaid() {
-        return due <= 0;
+        return premium <= 0;
     }
     
     public List<Payment> getPayments() {
         return payments;
     }
 
-    public double getDue() {
-        return due;
+    public double getPremium() {
+        return premium;
     }
 
-    public void setDue(double due) {
-        this.due = due;
+    public void setPremium(double premium) {
+        this.premium = premium;
     }
     
     public boolean isPeriodic() {
@@ -175,8 +175,8 @@ public class Policy {
             return this;
         }
         
-        public Builder due(double due) {
-            policy.due = due;
+        public Builder premium(double premium) {
+            policy.premium = premium;
             return this;
         }
         

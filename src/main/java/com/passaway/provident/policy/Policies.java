@@ -21,41 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.states;
+package com.passaway.provident.policy;
 
-import com.passaway.provident.policy.*;
-import com.passaway.provident.policy.coverages.Coverage;
+import java.util.*;
 
-import static com.passaway.provident.policy.Payout.NONE;
+import static com.passaway.provident.policy.PolicyType.*;
 
 
-public class Lapsed extends Status {
+public class Policies {
     
-    public Lapsed() {
-        this("This policy is currently lapsed");
+    private Map<PolicyType, PolicyInformation> policies;
+    
+    
+    public Policies() {
+        policies = new EnumMap<>(PolicyType.class);
+        policies.put(CAR, new PolicyInformation("Car conditions", "Car premium", "Car payout", ));
     }
     
-    public Lapsed(String information) {
-        super(information);
-    }
-
-    @Override
-    public void pay(Policy policy, Payment payment) {
-        policy.setPremium(policy.getPremium() - payment.getAmount());
-        if (policy.getPremium() <= 0) {
-            policy.setStatus(new Active());
-        }
-    }
-
-    @Override
-    public void charge(Policy policy, Coverage coverage) {
-        coverage.charge(policy);
-    }
-
-    @Override
-    public Payout claim(Policy policy, Coverage coverage, String context) {
-        System.out.println("Policy canot be claimed while lapsed");
-        return NONE;
+    
+    public Map<PolicyType, PolicyInformation> getPolicies() {
+        return policies;
     }
     
 }
