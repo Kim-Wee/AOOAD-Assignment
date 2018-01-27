@@ -29,6 +29,7 @@ import com.passaway.provident.policy.coverages.Coverage;
 import com.passaway.provident.policy.states.*;
 
 import java.util.*;
+import java.util.function.Function;
 
 
 public class Policy {
@@ -42,13 +43,9 @@ public class Policy {
     private List<Payment> payments;
     private double premium;
     private boolean periodic;
+   
     
-    
-    public Policy(Agent agent, Client client, PolicyType type, Coverage coverage, double premium, boolean periodic) {
-        this(UUID.randomUUID(), agent, client, type, coverage, new Active(), new ArrayList<>(), premium, periodic);
-    }
-    
-    public Policy(UUID id, Agent agent, Client client, PolicyType type, Coverage coverage, Status status, List<Payment> payments, double premium, boolean periodic) {
+    private Policy(UUID id, Agent agent, Client client, PolicyType type, Coverage coverage, Status status, List<Payment> payments, double premium, boolean periodic) {
         this.id = id;
         this.agent = agent;
         this.client = client;
@@ -137,7 +134,7 @@ public class Policy {
     
     
     public static Builder builder() {
-        return new Builder(new Policy(null, null, null, null, 0, false));
+        return new Builder(new Policy(null, null, null, null, null, null, new ArrayList<>(), 0, false));
     }
     
     public static class Builder {
@@ -149,6 +146,11 @@ public class Policy {
             this.policy = policy;
         }
         
+        
+        public Builder id(UUID id) {
+            policy.id = id;
+            return this;
+        }
         
         public Builder agent(Agent agent) {
             policy.agent = agent;
@@ -167,6 +169,11 @@ public class Policy {
         
         public Builder coverage(Coverage coverage) {
             policy.coverage = coverage;
+            return this;
+        }
+        
+        public Builder rider(Function<Coverage, Coverage> rider) {
+            policy.coverage = rider.apply(policy.coverage);
             return this;
         }
         
