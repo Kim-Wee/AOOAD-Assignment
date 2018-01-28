@@ -26,13 +26,6 @@ package com.passaway.provident.policy;
 
 public class Payout {
     
-    public static final Payout NONE = new Payout(0, true) {
-        @Override
-        public void setAmount(double amount) {
-            
-        }
-    };
-    
     private double amount;
     private boolean complete;
     

@@ -26,6 +26,7 @@ package com.passaway.provident.policy;
 import java.util.*;
 
 import static com.passaway.provident.policy.PolicyType.*;
+import static java.util.Arrays.asList;
 
 
 public class Policies {
@@ -35,7 +36,21 @@ public class Policies {
     
     public Policies() {
         policies = new EnumMap<>(PolicyType.class);
-        policies.put(CAR, new PolicyInformation("Car conditions", "Car premium", "Car payout", ));
+        policies.put(CAR, new PolicyInformation("Car conditions", "Car premium", "Car payout", asList("Additional rider")));
+        policies.put(MEDICAL, new PolicyInformation("Medical conditions", "Car premium", "Car payout", asList("Additional rider")));
+        policies.put(TRAVEL, new PolicyInformation("Travel information", "Travel premium", "Travel payout", asList("Additional rider")));
+    }
+    
+    
+    public void viewAvailablePolicies() {
+        System.out.println("===== Policies =====");
+        policies.forEach((type, info) -> 
+            System.out.println("Type: " + type.toString() + 
+                               "\nTerms and conditions: " + info.getTermsAndConditions() + 
+                               "\nPremium information: " + info.getPremiumInformation() +
+                               "\nAvailable riders: " + info.getRiders().toString() + "\n"
+            )
+        );
     }
     
     

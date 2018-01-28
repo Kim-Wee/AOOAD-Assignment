@@ -42,10 +42,9 @@ public class Policy {
     private Status status;
     private List<Payment> payments;
     private double premium;
-    private boolean periodic;
    
     
-    private Policy(UUID id, Agent agent, Client client, PolicyType type, Coverage coverage, Status status, List<Payment> payments, double premium, boolean periodic) {
+    private Policy(UUID id, Agent agent, Client client, PolicyType type, Coverage coverage, Status status, List<Payment> payments, double premium) {
         this.id = id;
         this.agent = agent;
         this.client = client;
@@ -54,7 +53,6 @@ public class Policy {
         this.status = status;
         this.payments = payments;
         this.premium = premium;
-        this.periodic = periodic;
     }
     
     
@@ -67,7 +65,7 @@ public class Policy {
         status.charge(this, coverage);
     }
     
-    public Payout claim(String context) {
+    public Optional<Payout> claim(String context) {
         return status.claim(this, coverage, context);
     }
         
@@ -129,12 +127,12 @@ public class Policy {
     }
     
     public boolean isPeriodic() {
-        return periodic;
+        return coverage.isPeriodic();
     }
     
     
     public static Builder builder() {
-        return new Builder(new Policy(null, null, null, null, null, null, new ArrayList<>(), 0, false));
+        return new Builder(new Policy(UUID.randomUUID(), null, null, null, null, new Active(), new ArrayList<>(), 0));
     }
     
     public static class Builder {
@@ -184,11 +182,6 @@ public class Policy {
         
         public Builder premium(double premium) {
             policy.premium = premium;
-            return this;
-        }
-        
-        public Builder periodic(boolean periodic) {
-            policy.periodic = periodic;
             return this;
         }
         

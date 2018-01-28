@@ -25,18 +25,21 @@ package com.passaway.provident.policy.coverages;
 
 import com.passaway.provident.policy.*;
 
+import java.util.Optional;
+
 
 public class CarCoverage implements Coverage {
 
     @Override
-    public Payout claim(Policy policy, String context) {
-        System.out.println("Claim car coverage here");
-        return new Payout(10, false);
+    public Optional<Payout> claim(Policy policy, String context) {
+        System.out.println("<Insert fancy car coverage claim calculation here>");
+        return Optional.of(new Payout(20, false));
     }
 
     @Override
     public void charge(Policy policy) {
-        System.out.println("Create car premium here");
+        System.out.println("<Insert fancy car coverage claim calculation here>");
+        policy.setPremium(policy.getPremium() + 20);
     }
 
     @Override

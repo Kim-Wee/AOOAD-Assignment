@@ -26,7 +26,7 @@ package com.passaway.provident.policy.states;
 import com.passaway.provident.policy.*;
 import com.passaway.provident.policy.coverages.Coverage;
 
-import static com.passaway.provident.policy.Payout.NONE;
+import java.util.Optional;
 
 
 public class Terminated extends Status {
@@ -47,9 +47,9 @@ public class Terminated extends Status {
     }
 
     @Override
-    public Payout claim(Policy policy, Coverage coverage, String context) {
+    public Optional<Payout> claim(Policy policy, Coverage coverage, String context) {
         System.out.println("Policy has already been terminated");
-        return NONE;
+        return Optional.empty();
     }
 
     @Override

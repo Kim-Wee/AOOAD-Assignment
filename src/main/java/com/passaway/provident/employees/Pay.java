@@ -28,18 +28,18 @@ package com.passaway.provident.employees;
 public interface Pay {
     
     public static final Pay JUNIOR_AGENT = agent -> {
-        System.out.println("Calculate junior agent pay");
+        System.out.println("<Insert fancy Junior Agent pay calculation here>");
         return 0;
     };
     
     public static final Pay AGENT = agent -> {
-        System.out.println("Calculate agent pay");
-        return 0;
+        System.out.println("<Insert fancy Agent pay calculation here>");
+        return 1;
     };
     
     public static final Pay SENIOR_AGENT = agent -> {
-        System.out.println("Calculate Senior agent pay");
-        return 0;
+        System.out.println("<Insert fancy Senior Agent pay calculation here>");
+        return 2;
     };
     
     public double calculate(Agent agent);

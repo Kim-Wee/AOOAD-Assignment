@@ -25,6 +25,8 @@ package com.passaway.provident.policy.coverages;
 
 import com.passaway.provident.policy.*;
 
+import java.util.Optional;
+
 
 public class AdditionalRider extends Rider {
     
@@ -34,18 +36,18 @@ public class AdditionalRider extends Rider {
     
     
     @Override
-    public Payout claim(Policy policy, String context) {
-        Payout payout = coverage.claim(policy, context);
-        System.out.println("Additional claim here");
-        payout.setAmount(payout.getAmount() + 1);
+    public Optional<Payout> claim(Policy policy, String context) {
+        System.out.println("<Insert fancy additional claim calculation here>");
+        Optional<Payout> payout = coverage.claim(policy, context);
+        payout.ifPresent(p -> p.setAmount(p.getAmount() + 1));
         
         return payout;
     }
 
     @Override
     public void charge(Policy policy) {
+        System.out.println("<Insert fancy additional charge calculation here>");
         coverage.charge(policy);
-        System.out.println("Additional create here");
         policy.setPremium(policy.getPremium() + 1);
     }
     
