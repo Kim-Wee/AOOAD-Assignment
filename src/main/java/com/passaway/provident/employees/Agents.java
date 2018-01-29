@@ -61,6 +61,18 @@ public class Agents {
         agents.put(agent.getID(), agent);
     }
     
+    
+    public void find() {
+        UUID id = Input.as("Enter the Agent ID", "Invalid input", UUID::fromString);
+        Agent agent = controller.getAgents().getAgents().get(id);
+        if (agent != null) {
+            view(agent);
+            
+        } else {
+            System.out.println("Unable to find agent");
+        }
+    }
+    
     public void view(Agent agent) {
         System.out.println("===== Agent information =====\n"
                 + "Name: " + agent.getName() + "\n"

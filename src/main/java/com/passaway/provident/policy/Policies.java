@@ -60,7 +60,7 @@ public class Policies {
         for (Agent agent : controller.getAgents().getAgents().values()) {
             Policy policy = agent.getPolicies().get(id);
             if (policy != null) {
-                System.out.println("===== Policyt ====="
+                System.out.println("===== Policy ====="
                             + "\nID: " + policy.getID()
                             + "\nStatus: " + policy.getStatus().getInformation()
                             + "\nPremium information: " + policy.getCoverage().getPremiumInformation()
@@ -70,6 +70,8 @@ public class Policies {
                     return;
             }
         }
+        
+        System.out.println("Unable to find policy");
     }
     
     public void findPayment() {
@@ -90,6 +92,8 @@ public class Policies {
                 }
             }
         }
+        
+        System.out.println("Unable to find payment");
     }
     
     

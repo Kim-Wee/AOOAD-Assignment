@@ -44,10 +44,19 @@ public class Controller {
     
     
     public void view() {
+        String message = "===== Menu ====="
+                + "\n1. Register agent"
+                + "\n2. Find agent"
+                + "\n3. Exit";
+        
         while (true) {
-            switch (Input.as("===== Menu =====\n1. Register agent\n2. Exit", 2)) {
+            switch (Input.as(message, 3)) {
                 case 1:
                     agents.register();
+                    break;
+                    
+                case 2:
+                    agents.find();
                     break;
                     
                 default:
@@ -57,10 +66,49 @@ public class Controller {
     }
     
     public void view(Agent agent) {
+        String message = "===== Menu ====="
+                + "\n1. Register customer"
+                + "\n2. Create new policy"
+                + "\n3. View policies"
+                + "\n4. Customer(s) information"
+                + "\n5. Find policy"
+                + "\n6. Find payment"
+                + "\n7. Generate alerts"
+                + "\n8. Pay premiums"
+                + "\n9. Exit";
+        
         while (true) {
-            switch (Input.as("===== Menu =====\n1. Register agent\n2. Exit", 2)) {
+            switch (Input.as(message, 9)) {
                 case 1:
-                    agents.register();
+                    clients.register();
+                    break;
+                    
+                case 2:
+                    policies.createPolicy(agent);
+                    break;
+                    
+                case 3:
+                    policies.view(agent, message, policy -> true);
+                    break;
+                    
+                case 4:
+                    agent.getPolicies().values().forEach(policy -> clients.view(policy.getClient()));
+                    break;
+                    
+                case 5:
+                    policies.findPolicy();
+                    break;
+                    
+                case 6:
+                    policies.findPayment();
+                    break;
+                    
+                case 7:
+                    agents.remind(agent);
+                    break;
+                    
+                case 8:
+                    policies.editPolicy(agent);
                     break;
                     
                 default:
@@ -70,7 +118,40 @@ public class Controller {
     }
     
     public void view(Client client) {
+        String message = "===== Menu ====="
+                + "\n1. View policies"
+                + "\n2. View all policy information"
+                + "\n3. Find policy"
+                + "\n4. Find payment"
+                + "\n5. Pay premiums"
+                + "\n6. Exit";
         
+        while (true) {
+            switch (Input.as(message, 9)) {
+                case 1:
+                    policies.view(client, "", policy -> true);
+                    break;
+                    
+                case 2:
+                    policies.view();
+                    break;
+                    
+                case 3:
+                    policies.findPolicy();
+                    break;
+                    
+                case 4:
+                    policies.findPayment();
+                    break;
+                    
+                case 5:
+                    clients.payOustandingPremiums(client);
+                    break;
+                    
+                default:
+                    return;
+            }
+        }
     }
 
     
