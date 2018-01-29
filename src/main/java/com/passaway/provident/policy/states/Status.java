@@ -26,6 +26,8 @@ package com.passaway.provident.policy.states;
 import com.passaway.provident.policy.*;
 import com.passaway.provident.policy.coverages.Coverage;
 
+import java.util.Optional;
+
 
 public abstract class Status {
     
@@ -41,8 +43,7 @@ public abstract class Status {
     
     public abstract void charge(Policy policy, Coverage coverage);
         
-    public abstract Payout claim(Policy policy, Coverage coverage, String context);
-    
+    public abstract Optional<Payout> claim(Policy policy, Coverage coverage, String context);
     
     public void cancelledByAgent(Policy policy) {
         policy.setStatus(Terminated.AGENT);
@@ -51,6 +52,7 @@ public abstract class Status {
     public void cancelledByClient(Policy policy) {
         policy.setStatus(Terminated.CLIENT);
     }
+    
     
     public String getInformation() {
         return information;

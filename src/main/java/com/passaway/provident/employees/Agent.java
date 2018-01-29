@@ -30,6 +30,7 @@ import java.util.*;
 
 public class Agent {
     
+    private UUID id;
     private String name;
     private String information;
     private List<Policy> policies;
@@ -38,10 +39,11 @@ public class Agent {
     
     
     public Agent(String name, String information, Pay pay, double commission) {
-        this(name, information, new ArrayList<>(), pay, commission);
+        this(UUID.randomUUID(), name, information, new ArrayList<>(), pay, commission);
     }
     
-    public Agent(String name, String information, List<Policy> policies, Pay pay, double commission) {
+    public Agent(UUID id, String name, String information, List<Policy> policies, Pay pay, double commission) {
+        this.id = id;
         this.name = name;
         this.information = information;
         this.policies = policies;
@@ -52,14 +54,18 @@ public class Agent {
     
     public void sendEmail(Policy policy) {
         String email = policy.getClient().getEmail();
-        System.out.println("Send an email");
+        System.out.println("<Insert fancy send an email code here>");
     }
     
     public void createReminderLetter(Policy policy) {
         String address = policy.getClient().getAddress();
-        System.out.println("Print reminder letter");
+        System.out.println("<Insert fancy print a letter code here>");
     }
-
+    
+    
+    public UUID getID() {
+        return id;
+    }
     
     public String getName() {
         return name;

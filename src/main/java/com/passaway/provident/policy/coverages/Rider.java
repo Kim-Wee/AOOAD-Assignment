@@ -25,6 +25,8 @@ package com.passaway.provident.policy.coverages;
 
 import com.passaway.provident.policy.*;
 
+import java.util.Optional;
+
 
 public abstract class Rider implements Coverage {
     
@@ -37,7 +39,7 @@ public abstract class Rider implements Coverage {
     
     
     @Override
-    public Payout claim(Policy policy, String context) {
+    public Optional<Payout> claim(Policy policy, String context) {
         return coverage.claim(policy, context);
     }
 

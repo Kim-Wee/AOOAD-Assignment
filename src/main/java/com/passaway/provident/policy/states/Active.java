@@ -26,6 +26,8 @@ package com.passaway.provident.policy.states;
 import com.passaway.provident.policy.*;
 import com.passaway.provident.policy.coverages.Coverage;
 
+import java.util.Optional;
+
 
 public class Active extends Status {
     
@@ -45,11 +47,14 @@ public class Active extends Status {
     }
 
     @Override
-    public Payout claim(Policy policy, Coverage coverage, String context) {
-        Payout payout = coverage.claim(policy, context);
-        if (payout.isCompletelyPaidOut()) {
-            policy.setStatus(Terminated.PAID_OUT);
-        }
+    public Optional<Payout> claim(Policy policy, Coverage coverage, String context) {
+        Optional<Payout> payout = coverage.claim(policy, context);
+        
+        payout.ifPresent(p -> { 
+            if (p.isCompletelyPaidOut()) {
+                policy.setStatus(Terminated.PAID_OUT);
+            }
+        });
         
         return payout;
     }

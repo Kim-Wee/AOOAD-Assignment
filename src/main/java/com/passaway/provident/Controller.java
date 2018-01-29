@@ -21,19 +21,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.coverages;
+package com.passaway.provident;
 
-import com.passaway.provident.policy.*;
+import com.passaway.provident.client.Clients;
+import com.passaway.provident.employees.Agents;
+import com.passaway.provident.policy.Policies;
 
-import java.util.Optional;
 
-
-public interface Coverage {
+public class Controller {
     
-    public Optional<Payout> claim(Policy policy, String context);
+    private Agents agents;
+    private Clients clients;
+    private Policies policies;
     
-    public void charge(Policy policy);
     
-    public boolean isPeriodic();
+    public Controller(Agents agents, Clients clients, Policies policies) {
+        this.agents = agents;
+        this.clients = clients;
+        this.policies = policies;
+    }
+
+    
+    public Agents getAgents() {
+        return agents;
+    }
+
+    public void setAgents(Agents agents) {
+        this.agents = agents;
+    }
+
+    public Clients getClients() {
+        return clients;
+    }
+
+    public void setClients(Clients clients) {
+        this.clients = clients;
+    }
+
+    public Policies getPolicies() {
+        return policies;
+    }
+
+    public void setPolicies(Policies policies) {
+        this.policies = policies;
+    }
     
 }
