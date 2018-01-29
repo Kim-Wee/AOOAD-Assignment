@@ -40,11 +40,12 @@ public class Policy {
     private PolicyType type;
     private Coverage coverage;
     private Status status;
-    private List<Payment> payments;
+    private Map<UUID, Payment> payments;
     private double premium;
+    private String termsAndConditions;
    
     
-    private Policy(UUID id, Agent agent, Client client, PolicyType type, Coverage coverage, Status status, List<Payment> payments, double premium) {
+    private Policy(UUID id, Agent agent, Client client, PolicyType type, Coverage coverage, Status status, Map<UUID, Payment> payments, double premium, String termsAndConditions) {
         this.id = id;
         this.agent = agent;
         this.client = client;
@@ -53,6 +54,7 @@ public class Policy {
         this.status = status;
         this.payments = payments;
         this.premium = premium;
+        this.termsAndConditions = termsAndConditions;
     }
     
     
@@ -114,7 +116,7 @@ public class Policy {
         return premium <= 0;
     }
     
-    public List<Payment> getPayments() {
+    public Map<UUID, Payment> getPayments() {
         return payments;
     }
 
@@ -126,13 +128,13 @@ public class Policy {
         this.premium = premium;
     }
     
-    public boolean isPeriodic() {
-        return coverage.isPeriodic();
+    public String getTermsAndConditions() {
+        return termsAndConditions;
     }
     
     
     public static Builder builder() {
-        return new Builder(new Policy(UUID.randomUUID(), null, null, null, null, new Active(), new ArrayList<>(), 0));
+        return new Builder(new Policy(UUID.randomUUID(), null, null, null, null, new Active(), new HashMap<>(), 0, ""));
     }
     
     public static class Builder {
@@ -182,6 +184,11 @@ public class Policy {
         
         public Builder premium(double premium) {
             policy.premium = premium;
+            return this;
+        }
+        
+        public Builder termsAndConditions(String terms) {
+            policy.termsAndConditions = terms;
             return this;
         }
         

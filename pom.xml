@@ -15,10 +15,18 @@
      
     <dependencies>
         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.7</version>
+            <scope>compile</scope>
+        </dependency>
+
+        
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>23.5-jre</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         
         <dependency>
@@ -81,6 +89,20 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <!-- Build an executable JAR -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.passaway.provident.Main</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
             

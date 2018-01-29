@@ -36,4 +36,9 @@ public interface Coverage {
     
     public boolean isPeriodic();
     
+    
+    public String getPremiumInformation();
+
+    public String getPayoutInformation();
+    
 }

@@ -23,8 +23,9 @@
  */
 package com.passaway.provident;
 
+import com.passaway.provident.client.Client;
 import com.passaway.provident.client.Clients;
-import com.passaway.provident.employees.Agents;
+import com.passaway.provident.employees.*;
 import com.passaway.provident.policy.Policies;
 
 
@@ -39,6 +40,37 @@ public class Controller {
         this.agents = agents;
         this.clients = clients;
         this.policies = policies;
+    }
+    
+    
+    public void view() {
+        while (true) {
+            switch (Input.as("===== Menu =====\n1. Register agent\n2. Exit", 2)) {
+                case 1:
+                    agents.register();
+                    break;
+                    
+                default:
+                    return;
+            }
+        }
+    }
+    
+    public void view(Agent agent) {
+        while (true) {
+            switch (Input.as("===== Menu =====\n1. Register agent\n2. Exit", 2)) {
+                case 1:
+                    agents.register();
+                    break;
+                    
+                default:
+                    return;
+            }
+        }
+    }
+    
+    public void view(Client client) {
+        
     }
 
     

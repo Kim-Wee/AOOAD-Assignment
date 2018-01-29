@@ -43,7 +43,7 @@ public class Active extends Status {
     @Override
     public void pay(Policy policy, Payment payment) {
         policy.setPremium(policy.getPremium() - payment.getAmount());
-        policy.getPayments().add(payment);
+        policy.getPayments().put(payment.getID(), payment);
     }
 
     @Override

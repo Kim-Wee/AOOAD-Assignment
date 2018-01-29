@@ -53,4 +53,14 @@ public abstract class Rider implements Coverage {
         return coverage.isPeriodic();
     }
     
+    @Override
+    public String getPremiumInformation() {
+        return coverage.getPremiumInformation();
+    }
+
+    @Override
+    public String getPayoutInformation() {
+        return coverage.getPayoutInformation();
+    }
+    
 }
