@@ -28,8 +28,13 @@ import com.passaway.provident.policy.*;
 import java.util.Optional;
 
 
-public class MedicalCoverage implements Coverage {
+public class MedicalCoverage extends AbstractCoverage {
 
+    public MedicalCoverage() {
+        super("Medical premium information", "Medical payout premium");
+    }
+    
+    
     @Override
     public Optional<Payout> claim(Policy policy, String context) {
         System.out.println("<Insert fancy medical coverage claim calculation here>");

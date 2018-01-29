@@ -21,55 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.client;
-
-import com.passaway.provident.PolicyHolder;
-import com.passaway.provident.policy.Policy;
-
-import java.util.*;
+package com.passaway.provident.policy.coverages;
 
 
-public class Client implements PolicyHolder {
+public abstract class AbstractCoverage implements Coverage {
     
-    private UUID id;
-    private String name;
-    private String address;
-    private String email;
-    private Map<UUID, Policy> policies;
+    private String premium;
+    private String payout;
     
     
-    public Client(String name, String address, String email) {
-        this(UUID.randomUUID(), name, address, email, new HashMap<>());
+    public AbstractCoverage(String premium, String payout) {
+        this.premium = premium;
+        this.payout = payout;
     }
     
-    public Client(UUID id, String name, String address, String email, Map<UUID, Policy> policies) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.email = email;
-        this.policies = policies;
-    }
-
     
-    public UUID getID() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-    
-    public String getEmail() {
-        return email;
+    @Override
+    public String getPremiumInformation() {
+        return premium;
     }
 
     @Override
-    public Map<UUID, Policy> getPolicies() {
-        return policies;
+    public String getPayoutInformation() {
+        return payout;
     }
     
 }

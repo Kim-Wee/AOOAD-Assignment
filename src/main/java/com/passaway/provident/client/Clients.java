@@ -23,13 +23,12 @@
  */
 package com.passaway.provident.client;
 
-import com.google.common.primitives.Ints;
+import com.google.common.primitives.Doubles;
 import com.passaway.provident.Controller;
+import com.passaway.provident.Input;
 import com.passaway.provident.policy.*;
 
 import java.util.*;
-
-import static java.util.stream.Collectors.toList;
 
 
 public class Clients {
@@ -44,84 +43,29 @@ public class Clients {
     }
     
     
-    public void registerClient() {
-        System.out.println("Enter the name: ");
-        String name = System.console().readLine();
-        
-        System.out.println("Enter the email: ");
-        String email = System.console().readLine();
-        
-        System.out.println("Enter the address");
-        String address = System.console().readLine();
-        
-        Client client = new Client(name, email, address);
+    public void register() {
+        Client client = new Client(Input.get("Enter name: "), Input.get("Enter email: "), Input.get("Enter address: "));
         clients.put(client.getID(), client);
     }
     
     
-    public void viewAccount(Client client) {
-        System.out.println("===== Client information =====\n" + 
-                           "Name: " + client.getName() + "\n" +
-                           "ID: " + client.getID() + "\n" +
-                           "Email: " + client.getEmail() + "\n" +
-                           "Address: " + client.getAddress() + "\n"
-                        );
+    public void view(Client client) {
+        System.out.println("===== Client information =====\n"
+                + "Name: " + client.getName() + "\n"
+                + "ID: " + client.getID() + "\n"
+                + "Email: " + client.getEmail() + "\n"
+                + "Address: " + client.getAddress() + "\n"
+        );
     }
     
     
-    public void viewOutstandingPolicies(Client client) {
-        System.out.println("===== Policies with outstanding premiums =====");
+    public void payOustandingPremiums(Client client) {
+        List<Policy> policies = controller.getPolicies().view(client, "with outstanding premiums ", policy -> !policy.isPaid());
+        Policy policy = policies.get(Input.as("Enter the index of the policy", policies.size()) - 1);
+        Input.match("Enter your credit card number", "Input can only contain numbers", value -> value.matches("\\d+"));
+        double amount = Input.as("Enter amount: ", "Invalid amount", Doubles::tryParse);
         
-        List<Policy> policies = client.getPolicies().stream().filter(policy -> !policy.isPaid()).collect(toList());
-        if (policies.isEmpty()) {
-            System.out.println("No outstanding policies");
-            return;
-        }
-        
-        for (int i = 0; i < policies.size(); i++) {
-            Policy policy = policies.get(i);
-            System.out.println(i + 1 + ". Policy ID: " + policy.getID() + " outstanding amount: " + policy.getPremium());
-        }
-        
-        System.out.println("Would you like to pay the outstanding premium?");
-        while (true) {
-            if (System.console().readLine().equalsIgnoreCase("yes")) {
-                payOutstandingPolicy(policies);
-                break;
-                
-            } else if (System.console().readLine().equalsIgnoreCase("no")) {
-                break;
-                
-            } else {
-                System.out.println("Invalid choice (must be either yes/no)");
-            }
-        }
-    }
-    
-    private void payOutstandingPolicy(List<Policy> policies) {
-        System.out.println("Enter the policy index");
-        Integer index;
-        while (true) {
-            if ((index = Ints.tryParse(System.console().readLine())) == null || index < 1 || index > policies.size()) {
-                System.out.println("Invalid index, must be integer between 1 and " + policies.size());
-                
-            } else {
-                break;
-            }
-        }
-        
-        System.out.println("Enter your credit card number");
-        while (true) {
-            if (!System.console().readLine().matches("\\d+")) {
-                System.out.println("Credit card number can only contain numbers");
-                
-            } else {
-                Policy policy = policies.get(index - 1);
-                policy.pay(new Payment(policy, PaymentType.CREDIT_CARD, policy.getPremium()));
-                System.out.println("Payment added.");
-                break;
-            }
-        }
+        policy.pay(new Payment(policy, PaymentType.CREDIT_CARD, amount));
     }
 
     

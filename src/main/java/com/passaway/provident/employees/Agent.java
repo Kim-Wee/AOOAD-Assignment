@@ -23,31 +23,32 @@
  */
 package com.passaway.provident.employees;
 
+import com.passaway.provident.PolicyHolder;
 import com.passaway.provident.policy.Policy;
 
 import java.util.*;
 
 
-public class Agent {
+public class Agent implements PolicyHolder {
     
     private UUID id;
     private String name;
-    private String information;
-    private List<Policy> policies;
     private Pay pay;
+    private String information;
+    private Map<UUID, Policy> policies;
     private double commission;
     
     
-    public Agent(String name, String information, Pay pay, double commission) {
-        this(UUID.randomUUID(), name, information, new ArrayList<>(), pay, commission);
+    public Agent(String name, Pay pay, String information, double commission) {
+        this(UUID.randomUUID(), name, pay, information, new HashMap<>(), commission);
     }
     
-    public Agent(UUID id, String name, String information, List<Policy> policies, Pay pay, double commission) {
+    public Agent(UUID id, String name, Pay pay, String information, Map<UUID, Policy> policies, double commission) {
         this.id = id;
         this.name = name;
+        this.pay = pay;
         this.information = information;
         this.policies = policies;
-        this.pay = pay;
         this.commission = commission;
     }
     
@@ -83,7 +84,8 @@ public class Agent {
         this.information = information;
     }
 
-    public List<Policy> getPolicies() {
+    @Override
+    public Map<UUID, Policy> getPolicies() {
         return policies;
     }
 

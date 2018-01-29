@@ -21,40 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy;
+package com.passaway.provident;
 
-import java.util.List;
+import com.passaway.provident.policy.Policy;
+
+import java.util.*;
 
 
-public class PolicyInformation {
+public interface PolicyHolder {
     
-    private String termsAndConditions;
-    private String premiumInformation;
-    private String payoutInformation;
-    private List<String> riders;
-    
-    
-    public PolicyInformation(String termsAndConditions, String premiumInformation, String payoutInformation, List<String> riders) {
-        this.termsAndConditions = termsAndConditions;
-        this.premiumInformation = premiumInformation;
-        this.payoutInformation = payoutInformation;
-        this.riders = riders;
-    }
-
-    public String getTermsAndConditions() {
-        return termsAndConditions;
-    }
-
-    public String getPremiumInformation() {
-        return premiumInformation;
-    }
-
-    public String getPayoutInformation() {
-        return payoutInformation;
-    }
-
-    public List<String> getRiders() {
-        return riders;
-    }
+    public Map<UUID, Policy> getPolicies();
     
 }
