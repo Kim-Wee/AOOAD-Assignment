@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.states;
+package com.passaway.provident.policy.status;
 
 import com.passaway.provident.policy.*;
 import com.passaway.provident.policy.coverages.Coverage;

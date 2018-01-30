@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.states;
+package com.passaway.provident.policy.status;
 
 import com.passaway.provident.policy.*;
 import com.passaway.provident.policy.coverages.Coverage;
@@ -29,42 +29,42 @@ import com.passaway.provident.policy.coverages.Coverage;
 import java.util.Optional;
 
 
-public class Active extends Status {
+public class Terminated extends Status {
     
-    public Active() {
-        this("This policy is current active");
-    }
+    public static final Terminated AGENT = new Terminated("Policy has been terminated by the agent");
+    public static final Terminated CLIENT = new Terminated("Policy has been terminated by the client");
+    public static final Terminated PAID_OUT = new Terminated("Policy has been paid out");
     
-    public Active(String information) {
+    
+    public Terminated(String information) {
         super(information);
     }
     
     
     @Override
     public void pay(Policy policy, Payment payment) {
-        policy.setPremium(policy.getPremium() - payment.getAmount());
-        policy.getPayments().put(payment.getID(), payment);
+        System.out.println("Policy has already been terminated");
     }
 
     @Override
     public Optional<Payout> claim(Policy policy, Coverage coverage, String context) {
-        Optional<Payout> payout = coverage.claim(policy, context);
-        
-        payout.ifPresent(p -> { 
-            if (p.isCompletelyPaidOut()) {
-                policy.setStatus(Terminated.PAID_OUT);
-            }
-        });
-        
-        return payout;
+        System.out.println("Policy has already been terminated");
+        return Optional.empty();
     }
 
     @Override
     public void charge(Policy policy, Coverage coverage) {
-        if (policy.getPremium() > 0) {
-            policy.setStatus(new Lapsed());
-        }
-       coverage.charge(policy);
+        System.out.println("Policy has already been terminated");
+    }
+
+    @Override
+    public void cancelledByAgent(Policy policy) {
+        System.out.println("Policy has already been terminated");
+    }
+    
+    @Override
+    public void cancelledByClient(Policy policy) {
+        System.out.println("Policy has already been terminated");
     }
     
 }

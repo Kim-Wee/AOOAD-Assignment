@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.states;
+package com.passaway.provident.policy.status;
 
 import com.passaway.provident.policy.*;
 import com.passaway.provident.policy.coverages.Coverage;
@@ -29,33 +29,42 @@ import com.passaway.provident.policy.coverages.Coverage;
 import java.util.Optional;
 
 
-public abstract class Status {
+public class Active extends Status {
     
-    private String information;
+    public Active() {
+        this("This policy is current active");
+    }
     
-    
-    public Status(String information) {
-        this.information = information;
+    public Active(String information) {
+        super(information);
     }
     
     
-    public abstract void pay(Policy policy, Payment payment);
-    
-    public abstract void charge(Policy policy, Coverage coverage);
+    @Override
+    public void pay(Policy policy, Payment payment) {
+        policy.setPremium(policy.getPremium() - payment.getAmount());
+        policy.getPayments().put(payment.getID(), payment);
+    }
+
+    @Override
+    public Optional<Payout> claim(Policy policy, Coverage coverage, String context) {
+        Optional<Payout> payout = coverage.claim(policy, context);
         
-    public abstract Optional<Payout> claim(Policy policy, Coverage coverage, String context);
-    
-    public void cancelledByAgent(Policy policy) {
-        policy.setStatus(Terminated.AGENT);
+        payout.ifPresent(p -> { 
+            if (p.isCompletelyPaidOut()) {
+                policy.setStatus(Terminated.PAID_OUT);
+            }
+        });
+        
+        return payout;
     }
-    
-    public void cancelledByClient(Policy policy) {
-        policy.setStatus(Terminated.CLIENT);
-    }
-    
-    
-    public String getInformation() {
-        return information;
+
+    @Override
+    public void charge(Policy policy, Coverage coverage) {
+        if (policy.getPremium() > 0) {
+            policy.setStatus(new Lapsed());
+        }
+       coverage.charge(policy);
     }
     
 }

@@ -46,6 +46,7 @@ public class Clients {
     public void register() {
         Client client = new Client(Input.get("Enter name: "), Input.get("Enter email: "), Input.get("Enter address: "));
         clients.put(client.getID(), client);
+        System.out.println("Created a client: " + client.getID());
     }
     
     

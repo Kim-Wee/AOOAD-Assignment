@@ -59,6 +59,7 @@ public class Agents {
      
         Agent agent = new Agent(name, pair.getLeft(), pair.getRight(), 0);
         agents.put(agent.getID(), agent);
+        System.out.println("Created an agent: "+ agent.getID());
     }
     
     

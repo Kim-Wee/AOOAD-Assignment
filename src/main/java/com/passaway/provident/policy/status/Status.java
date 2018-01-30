@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.states;
+package com.passaway.provident.policy.status;
 
 import com.passaway.provident.policy.*;
 import com.passaway.provident.policy.coverages.Coverage;
@@ -29,42 +29,33 @@ import com.passaway.provident.policy.coverages.Coverage;
 import java.util.Optional;
 
 
-public class Terminated extends Status {
+public abstract class Status {
     
-    public static final Terminated AGENT = new Terminated("Policy has been terminated by the agent");
-    public static final Terminated CLIENT = new Terminated("Policy has been terminated by the client");
-    public static final Terminated PAID_OUT = new Terminated("Policy has been paid out");
+    private String information;
     
     
-    public Terminated(String information) {
-        super(information);
+    public Status(String information) {
+        this.information = information;
     }
     
     
-    @Override
-    public void pay(Policy policy, Payment payment) {
-        System.out.println("Policy has already been terminated");
-    }
-
-    @Override
-    public Optional<Payout> claim(Policy policy, Coverage coverage, String context) {
-        System.out.println("Policy has already been terminated");
-        return Optional.empty();
-    }
-
-    @Override
-    public void charge(Policy policy, Coverage coverage) {
-        System.out.println("Policy has already been terminated");
-    }
-
-    @Override
+    public abstract void pay(Policy policy, Payment payment);
+    
+    public abstract void charge(Policy policy, Coverage coverage);
+        
+    public abstract Optional<Payout> claim(Policy policy, Coverage coverage, String context);
+    
     public void cancelledByAgent(Policy policy) {
-        System.out.println("Policy has already been terminated");
+        policy.setStatus(Terminated.AGENT);
     }
     
-    @Override
     public void cancelledByClient(Policy policy) {
-        System.out.println("Policy has already been terminated");
+        policy.setStatus(Terminated.CLIENT);
+    }
+    
+    
+    public String getInformation() {
+        return information;
     }
     
 }

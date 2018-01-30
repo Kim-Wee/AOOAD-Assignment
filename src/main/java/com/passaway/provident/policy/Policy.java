@@ -23,10 +23,11 @@
  */
 package com.passaway.provident.policy;
 
+import com.passaway.provident.policy.status.Status;
+import com.passaway.provident.policy.status.Active;
 import com.passaway.provident.client.Client;
 import com.passaway.provident.employees.Agent;
 import com.passaway.provident.policy.coverages.Coverage;
-import com.passaway.provident.policy.states.*;
 
 import java.util.*;
 import java.util.function.Function;
