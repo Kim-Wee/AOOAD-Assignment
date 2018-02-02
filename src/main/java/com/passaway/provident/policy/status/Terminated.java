@@ -31,11 +31,6 @@ import java.util.Optional;
 
 public class Terminated extends Status {
     
-    public static final Terminated AGENT = new Terminated("Policy has been terminated by the agent");
-    public static final Terminated CLIENT = new Terminated("Policy has been terminated by the client");
-    public static final Terminated PAID_OUT = new Terminated("Policy has been paid out");
-    
-    
     public Terminated(String information) {
         super(information);
     }
