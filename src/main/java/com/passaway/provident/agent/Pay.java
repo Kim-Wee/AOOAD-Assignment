@@ -21,50 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.status;
-
-import com.passaway.provident.policy.*;
-import com.passaway.provident.policy.coverages.Coverage;
-
-import java.util.Optional;
+package com.passaway.provident.agent;
 
 
-public class Active extends Status {
+@FunctionalInterface
+public interface Pay {
     
-    public Active() {
-        this("This policy is current active");
-    }
+    public static final Pay JUNIOR = agent -> {
+        System.out.println("<Insert fancy Junior Agent pay calculation here>");
+        return 0;
+    };
     
-    public Active(String information) {
-        super(information);
-    }
+    public static final Pay STANDARD = agent -> {
+        System.out.println("<Insert fancy Agent pay calculation here>");
+        return 1;
+    };
     
+    public static final Pay SENIOR = agent -> {
+        System.out.println("<Insert fancy Senior Agent pay calculation here>");
+        return 2;
+    };
     
-    @Override
-    public void pay(Policy policy, Payment payment) {
-        policy.setPremium(policy.getPremium() - payment.getAmount());
-        policy.getPayments().put(payment.getID(), payment);
-    }
-
-    @Override
-    public Optional<Payout> claim(Policy policy, Coverage coverage, String context) {
-        Optional<Payout> payout = coverage.claim(policy, context);
-        
-        payout.ifPresent(p -> { 
-            if (p.isCompletelyPaidOut()) {
-                policy.setStatus(Terminated.PAID_OUT);
-            }
-        });
-        
-        return payout;
-    }
-
-    @Override
-    public void charge(Policy policy, Coverage coverage) {
-        if (policy.getPremium() > 0) {
-            policy.setStatus(new Lapsed());
-        }
-       coverage.charge(policy);
-    }
-    
+    public double calculate(Agent agent);
 }

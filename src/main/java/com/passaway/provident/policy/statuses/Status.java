@@ -21,41 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.status;
+package com.passaway.provident.policy.statuses;
 
-import com.passaway.provident.policy.*;
-import com.passaway.provident.policy.coverages.Coverage;
+import com.passaway.provident.Payment;
+import com.passaway.provident.policy.Policy;
 
 import java.util.Optional;
 
 
-public abstract class Status {
+public interface Status {
     
-    private String information;
+    public void charge(Policy policy);
+    
+    public void pay(Policy policy, Payment payment);
+
+    public Optional<Double> payout(Policy policy);
     
     
-    public Status(String information) {
-        this.information = information;
+    public default void lapse(Policy policy) {
+        policy.setStatus(Lapsed.INSTANCE);
     }
     
-    
-    public abstract void pay(Policy policy, Payment payment);
-    
-    public abstract void charge(Policy policy, Coverage coverage);
-        
-    public abstract Optional<Payout> claim(Policy policy, Coverage coverage, String context);
-    
-    public void cancelledByAgent(Policy policy) {
-        policy.setStatus(Terminated.AGENT);
-    }
-    
-    public void cancelledByClient(Policy policy) {
-        policy.setStatus(Terminated.CLIENT);
-    }
-    
-    
-    public String getInformation() {
-        return information;
+    public default void terminate(Policy policy) {
+        policy.setStatus(Terminated.INSTANCE);
     }
     
 }

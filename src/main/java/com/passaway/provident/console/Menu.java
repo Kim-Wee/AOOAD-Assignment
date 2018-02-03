@@ -21,27 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.employees;
+package com.passaway.provident.console;
+
+import java.util.*;
+import java.util.function.Consumer;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 
-@FunctionalInterface
-public interface Pay {
+public class Menu<T> {
     
-    public static final Pay JUNIOR_AGENT = agent -> {
-        System.out.println("<Insert fancy Junior Agent pay calculation here>");
-        return 0;
-    };
+    private String title;
+    private Map<Integer, Pair<String, Consumer<T>>> options; 
     
-    public static final Pay AGENT = agent -> {
-        System.out.println("<Insert fancy Agent pay calculation here>");
-        return 1;
-    };
     
-    public static final Pay SENIOR_AGENT = agent -> {
-        System.out.println("<Insert fancy Senior Agent pay calculation here>");
-        return 2;
-    };
+    public Menu(String title) {
+        this.title = title;
+        options = new HashMap<>();
+    }
     
-    public double calculate(Agent agent);
+    
+    public void view() {
+        System.out.println("===== " + title + " Menu =====");
+        options.forEach((index, option) -> System.out.println(index + ". " + option.getLeft()));
+        System.out.println("\n");
+    }
+    
+    public int select(T viewer) {
+        int index = Input.match("Please select an option", options::containsKey);
+        options.get(index).getRight().accept(viewer);
+        
+        return index;
+    }
+    
+    
+    public void register(int index, String title, Consumer<T> consumer) {
+        options.put(index, Pair.of(title, consumer));
+    }
     
 }

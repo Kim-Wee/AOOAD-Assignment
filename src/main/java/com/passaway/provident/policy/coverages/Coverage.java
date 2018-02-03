@@ -23,22 +23,15 @@
  */
 package com.passaway.provident.policy.coverages;
 
-import com.passaway.provident.policy.*;
-
-import java.util.Optional;
+import com.passaway.provident.policy.Policy;
 
 
 public interface Coverage {
-    
-    public Optional<Payout> claim(Policy policy, String context);
-    
+        
     public void charge(Policy policy);
     
+    public double payout(Policy policy);
+    
     public boolean isPeriodic();
-    
-    
-    public String getPremiumInformation();
-
-    public String getPayoutInformation();
     
 }

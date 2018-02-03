@@ -21,15 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident;
+package com.passaway.provident.policy.statuses;
 
-import com.passaway.provident.policy.Policy;
+import com.passaway.provident.Payment;
+import com.passaway.provident.policy.*;
 
-import java.util.*;
+import java.util.Optional;
 
 
-public interface PolicyHolder {
+public class Active implements Status {
     
-    public Map<UUID, Policy> getPolicies();
+    public static final Active INSTANCE = new Active();
+    
+    
+    private Active() {}
+    
+    
+    @Override
+    public void charge(Policy policy) {
+       policy.getCoverage().charge(policy);
+    }
+    
+    @Override
+    public void pay(Policy policy, Payment payment) {
+        policy.setPremium(policy.getPremium() - payment.getAmount());
+        policy.getPayments().put(payment.getID(), payment);
+    }
+
+    @Override
+    public Optional<Double> payout(Policy policy) {
+        double payout = policy.getCoverage().payout(policy);
+        if (policy.isPaidout()) {
+            policy.setStatus(Terminated.INSTANCE);
+        }
+        
+        return Optional.of(payout);
+    }
     
 }

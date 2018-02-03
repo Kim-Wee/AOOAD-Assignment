@@ -21,70 +21,62 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.employees;
+package com.passaway.provident.agent;
 
-import com.passaway.provident.PolicyHolder;
 import com.passaway.provident.policy.Policy;
 
 import java.util.*;
 
+import static java.util.UUID.randomUUID;
 
-public class Agent implements PolicyHolder {
+
+public class Agent {
     
     private UUID id;
     private String name;
-    private Pay pay;
     private String information;
     private Map<UUID, Policy> policies;
+    private Pay pay;
     private double commission;
     
     
-    public Agent(String name, Pay pay, String information, double commission) {
-        this(UUID.randomUUID(), name, pay, information, new HashMap<>(), commission);
+    public Agent(String name, String information, Pay pay) {
+        this(randomUUID(), name, information, new HashMap<>(), pay, 0);
     }
     
-    public Agent(UUID id, String name, Pay pay, String information, Map<UUID, Policy> policies, double commission) {
+    public Agent(UUID id, String name, String information, Map<UUID, Policy> policies, Pay pay, double commission) {
         this.id = id;
         this.name = name;
-        this.pay = pay;
         this.information = information;
         this.policies = policies;
+        this.pay = pay;
         this.commission = commission;
     }
     
     
     public void sendEmail(Policy policy) {
-        String email = policy.getClient().getEmail();
-        System.out.println("<Insert fancy send an email code here>");
+        String email = policy.getCustomer().getEmail();
+        System.out.println("<Insert fancy send email code here>");
     }
     
-    public void createReminderLetter(Policy policy) {
-        String address = policy.getClient().getAddress();
-        System.out.println("<Insert fancy print a letter code here>");
+    public void printLetter(Policy policy) {
+        String address = policy.getCustomer().getAddress();
+        System.out.println("<Insert fancy print letter code here>");
     }
-    
+
     
     public UUID getID() {
         return id;
     }
-    
+
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getInformation() {
         return information;
     }
 
-    public void setInformation(String information) {
-        this.information = information;
-    }
-
-    @Override
     public Map<UUID, Policy> getPolicies() {
         return policies;
     }

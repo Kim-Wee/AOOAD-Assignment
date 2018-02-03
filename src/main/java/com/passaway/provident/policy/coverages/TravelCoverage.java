@@ -25,26 +25,19 @@ package com.passaway.provident.policy.coverages;
 
 import com.passaway.provident.policy.*;
 
-import java.util.Optional;
 
-
-public class TravelCoverage extends AbstractCoverage {
-
-    public TravelCoverage() {
-        super("Travel premium information", "Travel payout information");
-    }
-
-    
-    @Override
-    public Optional<Payout> claim(Policy policy, String context) {
-        System.out.println("<Insert fancy travel coverage claim calculation here>");
-        return Optional.of(new Payout(40, true));
-    }
+public class TravelCoverage implements Coverage {
 
     @Override
     public void charge(Policy policy) {
         System.out.println("<Insert fancy travel coverage charge calculation here>");
         policy.setPremium(policy.getPremium() + 40);
+    }
+    
+    @Override
+    public double payout(Policy policy) {
+        System.out.println("<Insert fancy travel payout claim calculation here>");
+        return 40;
     }
 
     @Override

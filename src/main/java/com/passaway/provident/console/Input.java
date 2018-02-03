@@ -21,12 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident;
+package com.passaway.provident.console;
 
 import com.google.common.primitives.Ints;
 
-import java.util.Scanner;
+
+import java.util.*;
 import java.util.function.*;
+
 
 
 public class Input {
@@ -39,26 +41,12 @@ public class Input {
         return scanner.nextLine();
     }
     
-    
-    public static int as(String message, int size) {
-        return as(message, "Input must be an integer between 1 and " + size, value -> {
-            Integer index = Ints.tryParse(value);
-            if (index != null && index > 0 && index <= size) {
-                return index;
-                
-            } else {
-                return null;
-            }
-        });
-    }
-    
-    
     public static <T> T as(String message, String error, Function<String, T> function) {
         System.out.println(message);
         while (true) {
             T value = function.apply(scanner.nextLine());
             if (value == null) {
-                System.out.println(error);
+                System.out.println(error + "\n");
                 
             } else {
                 return value;
@@ -66,6 +54,35 @@ public class Input {
         }
     }
     
+    public static <T> T as(String message, String error, Function<String, T> function, Predicate<T> predicate) {
+        System.out.println(message);
+        while (true) {
+            T value = function.apply(scanner.nextLine());
+            if (value != null && predicate.test(value)) {
+                return value;
+                
+            } else {
+                System.out.println(error + "\n");
+            }
+        }
+    }
+    
+    public static int between(String message, int min, int max) {
+        return between(message, min, max, i -> true);
+    }
+    
+    public static int between(String message, int min, int max, Predicate<Integer> predicate) {
+        System.out.println(message);
+        while (true) {
+            Integer index = Ints.tryParse(scanner.nextLine());
+            if (index != null && index >= min && index < max && predicate.test(index)) {
+                return index;
+                
+            } else {
+                System.out.println("Input must be an integer between " + min + " and " + max + "\n");
+            }
+        }
+    }
     
     public static String match(String message, String error, Predicate<String> predicate) {
         System.out.println(message);
@@ -75,7 +92,20 @@ public class Input {
                 return value;
                 
             } else {
-                System.out.println(error);
+                System.out.println(error + "\n");
+            }
+        }
+    }
+        
+    public static int match(String message, Predicate<Integer> predicate) {
+        System.out.println(message);
+        while (true) {
+            Integer value = Ints.tryParse(scanner.nextLine());
+            if (value != null && predicate.test(value)) {
+                return value;
+                
+            } else {
+                System.out.println("Invalid input\n");
             }
         }
     }

@@ -21,45 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.status;
-
-import com.passaway.provident.policy.*;
-import com.passaway.provident.policy.coverages.Coverage;
-
-import java.util.Optional;
+package com.passaway.provident;
 
 
-public class Terminated extends Status {
+public enum PaymentType {
     
-    public Terminated(String information) {
-        super(information);
-    }
-    
-    
-    @Override
-    public void pay(Policy policy, Payment payment) {
-        System.out.println("Policy has already been terminated");
-    }
-
-    @Override
-    public Optional<Payout> claim(Policy policy, Coverage coverage, String context) {
-        System.out.println("Policy has already been terminated");
-        return Optional.empty();
-    }
-
-    @Override
-    public void charge(Policy policy, Coverage coverage) {
-        System.out.println("Policy has already been terminated");
-    }
-
-    @Override
-    public void cancelledByAgent(Policy policy) {
-        System.out.println("Policy has already been terminated");
-    }
-    
-    @Override
-    public void cancelledByClient(Policy policy) {
-        System.out.println("Policy has already been terminated");
-    }
+    CHEQUE, CREDIT_CARD
     
 }

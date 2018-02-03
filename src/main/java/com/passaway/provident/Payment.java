@@ -21,29 +21,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.coverages;
+package com.passaway.provident;
+
+import com.passaway.provident.policy.Policy;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 
-public abstract class AbstractCoverage implements Coverage {
+public class Payment {    
     
-    private String premium;
-    private String payout;
+    private UUID id;
+    private LocalDateTime date;
+    private Policy policy;
+    private double amount;
+    private PaymentType type;
     
     
-    public AbstractCoverage(String premium, String payout) {
-        this.premium = premium;
-        this.payout = payout;
+    public Payment(Policy policy, PaymentType type, double amount) {
+        this.id = UUID.randomUUID();
+        this.policy = policy;
+        this.type = type;
+        this.date = LocalDateTime.now();
+        this.amount = amount;
+    }
+
+    
+    public UUID getID() {
+        return id;
     }
     
+    public LocalDateTime getDate() {
+        return date;
+    }
     
-    @Override
-    public String getPremiumInformation() {
-        return premium;
+    public Policy getPolicy() {
+        return policy;
+    }
+    
+    public double getAmount() {
+        return amount;
     }
 
-    @Override
-    public String getPayoutInformation() {
-        return payout;
+    public PaymentType getType() {
+        return type;
     }
     
 }

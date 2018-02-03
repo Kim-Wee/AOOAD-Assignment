@@ -25,26 +25,19 @@ package com.passaway.provident.policy.coverages;
 
 import com.passaway.provident.policy.*;
 
-import java.util.Optional;
 
-
-public class MedicalCoverage extends AbstractCoverage {
-
-    public MedicalCoverage() {
-        super("Medical premium information", "Medical payout premium");
-    }
-    
-    
-    @Override
-    public Optional<Payout> claim(Policy policy, String context) {
-        System.out.println("<Insert fancy medical coverage claim calculation here>");
-        return Optional.of(new Payout(30, true));
-    }
+public class MedicalCoverage implements Coverage {
 
     @Override
     public void charge(Policy policy) {
         System.out.println("<Insert fancy medical coverage charge calculation here>");
         policy.setPremium(policy.getPremium() + 30);
+    }
+    
+    @Override
+    public double payout(Policy policy) {
+        System.out.println("<Insert fancy medical coverage payout calculation here>");
+        return 30;
     }
 
     @Override

@@ -23,13 +23,11 @@
  */
 package com.passaway.provident.policy.coverages;
 
-import com.passaway.provident.policy.*;
-
-import java.util.Optional;
+import com.passaway.provident.policy.Policy;
 
 
 public abstract class Rider implements Coverage {
-    
+
     protected Coverage coverage;
     
     
@@ -39,28 +37,18 @@ public abstract class Rider implements Coverage {
     
     
     @Override
-    public Optional<Payout> claim(Policy policy, String context) {
-        return coverage.claim(policy, context);
-    }
-
-    @Override
     public void charge(Policy policy) {
         coverage.charge(policy);
     }
 
     @Override
-    public boolean isPeriodic() {
-        return coverage.isPeriodic();
+    public double payout(Policy policy) {
+        return coverage.payout(policy);
     }
     
     @Override
-    public String getPremiumInformation() {
-        return coverage.getPremiumInformation();
-    }
-
-    @Override
-    public String getPayoutInformation() {
-        return coverage.getPayoutInformation();
+    public boolean isPeriodic() {
+        return coverage.isPeriodic();
     }
     
 }

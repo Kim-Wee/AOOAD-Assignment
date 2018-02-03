@@ -23,61 +23,67 @@
  */
 package com.passaway.provident.policy;
 
-import com.passaway.provident.policy.status.Status;
-import com.passaway.provident.policy.status.Active;
-import com.passaway.provident.client.Client;
-import com.passaway.provident.employees.Agent;
+import com.passaway.provident.agent.Agent;
+import com.passaway.provident.*;
 import com.passaway.provident.policy.coverages.Coverage;
+import com.passaway.provident.policy.statuses.*;
 
 import java.util.*;
 import java.util.function.Function;
+
+import static java.util.UUID.randomUUID;
 
 
 public class Policy {
     
     private UUID id;
     private Agent agent;
-    private Client client;
+    private Customer customer;
     private PolicyType type;
     private Coverage coverage;
     private Status status;
     private Map<UUID, Payment> payments;
     private double premium;
+    private boolean paidout;
     private String termsAndConditions;
-   
+    private String premiumInformation;
+    private String payoutInformation;
     
-    private Policy(UUID id, Agent agent, Client client, PolicyType type, Coverage coverage, Status status, Map<UUID, Payment> payments, double premium, String termsAndConditions) {
+    
+    private Policy(UUID id, Agent agent, Customer customer, PolicyType type, Coverage coverage, String terms, String premium, String payout) {
         this.id = id;
         this.agent = agent;
-        this.client = client;
+        this.customer = customer;
         this.type = type;
         this.coverage = coverage;
-        this.status = status;
-        this.payments = payments;
-        this.premium = premium;
-        this.termsAndConditions = termsAndConditions;
+        this.status = Active.INSTANCE;
+        this.payments = new HashMap<>();
+        this.premium = 0;
+        this.paidout = false;
+        this.termsAndConditions = terms;
+        this.premiumInformation = premium;
+        this.payoutInformation = payout;
     }
     
+    
+    public void charge() {
+        status.charge(this);
+    }
     
     public void pay(Payment payment) {
         status.pay(this, payment);
     }
     
-        
-    public void charge() {
-        status.charge(this, coverage);
+    public Optional<Double> payout() {
+        return status.payout(this);
     }
     
-    public Optional<Payout> claim(String context) {
-        return status.claim(this, coverage, context);
+    public void lapse() {
+        status.lapse(this);
     }
         
-    public void cancelledByAgent() {
-        status.cancelledByAgent(this);
-    }
-    
-    public void cancelledByClient() {
-        status.cancelledByClient(this);
+    public void terminate() {
+        status.terminate(this);
     }
 
     
@@ -89,8 +95,8 @@ public class Policy {
         return agent;
     }
 
-    public Client getClient() {
-        return client;
+    public Customer getCustomer() {
+        return customer;
     }
 
     public PolicyType getType() {
@@ -100,23 +106,19 @@ public class Policy {
     public Coverage getCoverage() {
         return coverage;
     }
-    
+
     public void setCoverage(Coverage coverage) {
         this.coverage = coverage;
     }
-    
+
     public Status getStatus() {
         return status;
     }
-    
+
     public void setStatus(Status status) {
         this.status = status;
     }
-        
-    public boolean isPaid() {
-        return premium <= 0;
-    }
-    
+
     public Map<UUID, Payment> getPayments() {
         return payments;
     }
@@ -128,14 +130,30 @@ public class Policy {
     public void setPremium(double premium) {
         this.premium = premium;
     }
-    
+
+    public boolean isPaidout() {
+        return paidout;
+    }
+
+    public void setPaidout(boolean paidout) {
+        this.paidout = paidout;
+    }
+
     public String getTermsAndConditions() {
         return termsAndConditions;
     }
-    
+
+    public String getPremiumInformation() {
+        return premiumInformation;
+    }
+
+    public String getPayoutInformation() {
+        return payoutInformation;
+    }
+
     
     public static Builder builder() {
-        return new Builder(new Policy(UUID.randomUUID(), null, null, null, null, new Active(), new HashMap<>(), 0, ""));
+        return new Builder(new Policy(randomUUID(), null, null, null, null, "", "", ""));
     }
     
     public static class Builder {
@@ -158,8 +176,8 @@ public class Policy {
             return this;
         }
         
-        public Builder client(Client client) {
-            policy.client = client;
+        public Builder customer(Customer customer) {
+            policy.customer = customer;
             return this;
         }
         
@@ -169,22 +187,12 @@ public class Policy {
         }
         
         public Builder coverage(Coverage coverage) {
-            policy.coverage = coverage;
+            policy.setCoverage(coverage);
             return this;
         }
         
         public Builder rider(Function<Coverage, Coverage> rider) {
-            policy.coverage = rider.apply(policy.coverage);
-            return this;
-        }
-        
-        public Builder status(Status status) {
-            policy.status = status;
-            return this;
-        }
-        
-        public Builder premium(double premium) {
-            policy.premium = premium;
+            policy.setCoverage(rider.apply(policy.getCoverage()));
             return this;
         }
         
@@ -192,6 +200,16 @@ public class Policy {
             policy.termsAndConditions = terms;
             return this;
         }
+        
+        public Builder premiumInformation(String info) {
+            policy.premiumInformation = info;
+            return this;
+        }
+        
+        public Builder payoutInformation(String info) {
+            policy.payoutInformation = info;
+            return this;
+        } 
         
         
         public Policy build() {

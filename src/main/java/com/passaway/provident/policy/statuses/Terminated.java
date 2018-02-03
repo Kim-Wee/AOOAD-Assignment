@@ -21,48 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy;
+package com.passaway.provident.policy.statuses;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import com.passaway.provident.Payment;
+import com.passaway.provident.policy.*;
+
+import java.util.Optional;
 
 
-public class Payment {    
+public class Terminated implements Status {
     
-    private UUID id;
-    private Policy policy;
-    private PaymentType type;
-    private LocalDateTime date;
-    private double amount;
+    public static final Terminated INSTANCE = new Terminated();
     
     
-    public Payment(Policy policy, PaymentType type, double amount) {
-        this.id = UUID.randomUUID();
-        this.policy = policy;
-        this.type = type;
-        this.date = LocalDateTime.now();
-        this.amount = amount;
-    }
-
+    private Terminated() {}
     
-    public UUID getID() {
-        return id;
+    
+    @Override
+    public void charge(Policy policy) {
+        System.out.println("Policy has already been terminated");
     }
     
-    public Policy getPolicy() {
-        return policy;
+    @Override
+    public void pay(Policy policy, Payment payment) {
+        System.out.println("Policy has already been terminated");
     }
 
-    public PaymentType getType() {
-        return type;
+    @Override
+    public Optional<Double> payout(Policy policy) {
+        System.out.println("Policy has already been terminated");
+        return Optional.empty();
     }
-
-    public LocalDateTime getDate() {
-        return date;
+        
+    @Override
+    public void lapse(Policy policy) {
+        System.out.println("Policy has already been terminated");
     }
-
-    public double getAmount() {
-        return amount;
+    
+    @Override
+    public void terminate(Policy policy) {
+        System.out.println("Policy has already been terminated");
     }
     
 }

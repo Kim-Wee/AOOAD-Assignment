@@ -21,41 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.status;
+package com.passaway.provident.console;
 
-import com.passaway.provident.policy.*;
-import com.passaway.provident.policy.coverages.Coverage;
+import com.passaway.provident.policy.Policy;
 
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Predicate;
+
+import static java.util.stream.Collectors.toList;
 
 
-public class Lapsed extends Status {
+public class Display {    
     
-    public Lapsed() {
-        this("This policy is currently lapsed");
-    }
-    
-    public Lapsed(String information) {
-        super(information);
-    }
-
-    @Override
-    public void pay(Policy policy, Payment payment) {
-        policy.setPremium(policy.getPremium() - payment.getAmount());
-        if (policy.getPremium() <= 0) {
-            policy.setStatus(new Active());
+    public static List<Policy> view(String header, Collection<Policy> collection, Predicate<Policy> filter) {
+        List<Policy> policies = collection.stream().filter(filter).collect(toList());
+        
+        System.out.println("===== Policies " + header + "=====");
+        for (int i = 0; i < policies.size(); i++) {
+            Policy policy = policies.get(i);
+            System.out.println("Policy ID: " + policy.getID() + " Type: " + policy.getType() + " Client ID: " + policy.getCustomer().getID() + " Oustanding premium: " + policy.getPremium());
         }
-    }
-
-    @Override
-    public void charge(Policy policy, Coverage coverage) {
-        coverage.charge(policy);
-    }
-
-    @Override
-    public Optional<Payout> claim(Policy policy, Coverage coverage, String context) {
-        System.out.println("Policy canot be claimed while lapsed");
-        return Optional.empty();
+        
+        return policies;
     }
     
 }
