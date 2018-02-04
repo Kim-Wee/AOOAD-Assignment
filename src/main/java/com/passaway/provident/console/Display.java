@@ -39,7 +39,7 @@ public class Display {
         System.out.println("===== Policies " + header + "=====");
         for (int i = 0; i < policies.size(); i++) {
             Policy policy = policies.get(i);
-            System.out.println((i + 1) + ". Policy ID: [" + policy.getID() + "] Type: " + policy.getType() + " Client ID: [" + policy.getCustomer().getID() + "] Oustanding premium: " + policy.getPremium());
+            System.out.println((i + 1) + ". Policy ID: [" + policy.getID() + "] Type: " + policy.getType() + " Client ID: [" + policy.getCustomer().getID() + "] status [" + policy.getStatus().getClass().getSimpleName()+ "] Oustanding premium: " + policy.getPremium());
         }
         System.out.println("\n");
         return policies;
