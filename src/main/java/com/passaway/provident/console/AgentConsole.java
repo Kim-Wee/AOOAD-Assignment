@@ -98,19 +98,24 @@ public class AgentConsole {
             }
         });
         
-        Input.match("===== Riders =====\n1. Additional rider\n2. Exit", "Invalid input", value -> {
-           Integer index = Ints.tryParse(value);
-           if (index != null && index == 1) {
-                builder.rider(AdditionalRider::new);
-                System.out.println("Added rider");
-                return true;
-                
-           } else if (index == 2) {
-               return true;
-           }
-           
-           return false;
-        });
+        boolean loop = true;
+        while (loop) {
+            loop = Input.as("===== Riders =====\n1. Additional rider\n2. Exit", "Invalid input", value -> {
+                Integer index = Ints.tryParse(value);
+                if (index != null && index == 1) {
+                    builder.rider(AdditionalRider::new);
+                    System.out.println("Added rider");
+                    return true;
+
+                } else if (index == 2) {
+                    return false;
+
+                } else {
+                    return null;
+                }
+            });
+        }
+        
         
         System.out.println("<Insert fancy commission calculation here>\n");
         agent.setCommission(agent.getCommission() + 3);
@@ -139,7 +144,7 @@ public class AgentConsole {
         }
         
         Policy policy = policies.get(Input.between("Enter policy index: ", 1, policies.size()) - 1);
-        Input.match("Enter the option (send email, print letter, both, nothing)", "Invalid input", value -> {
+        Input.match("Enter the option (send email, print letter, both, exit)", "Invalid input", value -> {
             switch (value.toLowerCase()) {
                 case "send email":
                     agent.sendEmail(policy);
@@ -154,7 +159,7 @@ public class AgentConsole {
                     agent.printLetter(policy);
                     return true;
                     
-                case "nothing":
+                case "exit":
                     return true;
                     
                 default:

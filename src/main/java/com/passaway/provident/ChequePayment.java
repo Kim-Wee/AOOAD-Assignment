@@ -23,9 +23,22 @@
  */
 package com.passaway.provident;
 
+import com.passaway.provident.policy.Policy;
 
-public enum PaymentType {
+
+public class ChequePayment extends Payment {
     
-    CHEQUE, CREDIT_CARD
+    private String cheque;
+    
+    
+    public ChequePayment(Policy policy, String cheque, double amount) {
+        super(policy, amount);
+        this.cheque = cheque;
+    }
+    
+    
+    public String getChequeNumber() {
+        return cheque;
+    }
     
 }

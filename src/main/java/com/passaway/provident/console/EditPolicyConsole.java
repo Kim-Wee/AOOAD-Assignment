@@ -92,7 +92,7 @@ public class EditPolicyConsole {
     
     private void pay(Policy policy) {
         double amount = Input.as("Enter amount: ", "Invalid amount", Doubles::tryParse, value -> value > 0);
-        policy.pay(new Payment(policy, PaymentType.CHEQUE, amount));
+        policy.pay(new ChequePayment(policy, Input.match("Enter your cheque number: ", "Input can only contain numbers", value -> value.matches("\\d+")), amount));
         System.out.println("Payment has been made");
     }
     
