@@ -71,9 +71,12 @@ public class CustomerConsole {
         
         Policy policy = policies.get(Input.between("Enter the index of the policy: ", 1, policies.size()) - 1);
         
-        Input.match("Enter your credit card number: ", "Input can only contain numbers", value -> value.matches("\\d+"));
+        
 
-        policy.pay(new Payment(policy, PaymentType.CREDIT_CARD, Input.as("Enter amount: ", "Invalid amount", Doubles::tryParse)));
+        policy.pay(new CreditCardPayment(policy, 
+                Input.match("Enter your credit card number: ", "Input can only contain numbers", value -> value.matches("\\d+")), 
+                Input.as("Enter amount: ", "Invalid amount", Doubles::tryParse))
+        );
     }
     
 }

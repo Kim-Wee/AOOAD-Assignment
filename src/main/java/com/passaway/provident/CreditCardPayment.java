@@ -25,40 +25,20 @@ package com.passaway.provident;
 
 import com.passaway.provident.policy.Policy;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
 
-
-public abstract class Payment {    
+public class CreditCardPayment extends Payment {
     
-    private UUID id;
-    private LocalDateTime date;
-    private Policy policy;
-    private double amount;
+    private String number;
     
     
-    public Payment(Policy policy, double amount) {
-        this.id = UUID.randomUUID();
-        this.policy = policy;
-        this.date = LocalDateTime.now();
-        this.amount = amount;
-    }
-
-    
-    public UUID getID() {
-        return id;
+    public CreditCardPayment(Policy policy, String number, double amount) {
+        super(policy, amount);
+        this.number = number;
     }
     
-    public LocalDateTime getDate() {
-        return date;
-    }
     
-    public Policy getPolicy() {
-        return policy;
-    }
-    
-    public double getAmount() {
-        return amount;
+    public String getCardNumber() {
+        return number;
     }
     
 }
