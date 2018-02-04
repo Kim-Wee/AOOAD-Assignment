@@ -46,6 +46,7 @@ public class Lapsed implements Status {
     public void pay(Policy policy, Payment payment) {
         policy.setPremium(policy.getPremium() - payment.getAmount());
         if (policy.getPremium() <= 0) {
+            System.out.println("Policy is no longer lapsed");
             policy.setStatus(Active.INSTANCE);
         }
     }

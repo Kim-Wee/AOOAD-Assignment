@@ -69,7 +69,7 @@ public class CustomerConsole {
             return;
         }
         
-        Policy policy = policies.get(Input.between("Enter the index of the policy: ", 0, policies.size()) - 1);
+        Policy policy = policies.get(Input.between("Enter the index of the policy: ", 1, policies.size()) - 1);
         
         Input.match("Enter your credit card number: ", "Input can only contain numbers", value -> value.matches("\\d+"));
 

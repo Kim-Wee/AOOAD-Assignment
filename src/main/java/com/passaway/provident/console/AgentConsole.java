@@ -68,8 +68,18 @@ public class AgentConsole {
     }
     
     private void createPolicy(Agent agent) {
-        Policy.Builder builder = Policy.builder().agent(agent).customer(Input.as("Enter ID of customer: ", "Invalid ID", id -> customers.get(UUID.fromString(id)), customers::containsKey));
+        Policy.Builder builder = Policy.builder().agent(agent);
         
+        Customer customer = customers.get(Input.as("Enter ID of customer: ", "Invalid ID", id -> {
+            try {
+                return UUID.fromString(id);
+                
+            } catch (IllegalArgumentException e) {
+                return null;
+            }
+        }, customers::containsKey));
+        builder.customer(customer);
+                
         Input.match("Enter the policy type (CAR, MEDICAL, TRAVEL)", "Invalid input", value -> {
             switch (value.toLowerCase()) {
                 case "car":
@@ -89,21 +99,21 @@ public class AgentConsole {
             }
         });
         
-        Input.match("===== Riders =====\n1. Additional rider", "Enter the index or 'done' to exit", value -> {
-           if (value.equalsIgnoreCase("done")) {
-               return true;
-           }
-           
+        Input.match("===== Riders =====\n1. Additional rider\n2. Exit", "Invalid input", value -> {
            Integer index = Ints.tryParse(value);
-           if (index != null && index > 0 && index <= 1) {
+           if (index != null && index == 1) {
                 builder.rider(AdditionalRider::new);
                 System.out.println("Added rider");
+                return true;
+                
+           } else if (index == 2) {
+               return true;
            }
            
            return false;
         });
         
-        System.out.println("<Insert fancy commission calculation here>");
+        System.out.println("<Insert fancy commission calculation here>\n");
         agent.setCommission(agent.getCommission() + 3);
  
         Policy policy = builder.build();
@@ -115,7 +125,7 @@ public class AgentConsole {
     private void editPolicy(Agent agent) {
         List<Policy> policies = Display.view("", agent.getPolicies().values(), policy -> true);
         if (!policies.isEmpty()) {
-            Policy policy = policies.get(Input.between("Enter index of policy", 0, policies.size()) - 1);
+            Policy policy = policies.get(Input.between("Enter policy index: ", 1, policies.size()) - 1);
             edit.menu(policy);
             
         } else {
@@ -129,7 +139,7 @@ public class AgentConsole {
             return;
         }
         
-        Policy policy = policies.get(Input.between("Enter policy index: ", 0, policies.size()) - 1);
+        Policy policy = policies.get(Input.between("Enter policy index: ", 1, policies.size()) - 1);
         Input.match("Enter the option (send email, print letter, both, nothing)", "Invalid input", value -> {
             switch (value.toLowerCase()) {
                 case "send email":

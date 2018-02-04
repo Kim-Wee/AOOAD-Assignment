@@ -75,7 +75,7 @@ public class Input {
         while (true) {
             System.out.println(message);
             Integer index = Ints.tryParse(scanner.nextLine());
-            if (index != null && index >= min && index < max && predicate.test(index)) {
+            if (index != null && index >= min && index <= max && predicate.test(index)) {
                 return index;
                 
             } else {

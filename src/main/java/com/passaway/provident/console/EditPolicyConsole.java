@@ -39,15 +39,15 @@ public class EditPolicyConsole {
         menu = new Menu<>("Edit Policy");
         menu.register(1, "Edit status", this::editStatus);
         menu.register(2, "Set current premium", this::editPremium);
-        menu.register(6, "Add rider", this::addRider);
-        menu.register(7, "Pay premium", this::pay);
-        menu.register(8, "Exit", policy -> {});
+        menu.register(3, "Add rider", this::addRider);
+        menu.register(4, "Pay premium", this::pay);
+        menu.register(5, "Exit", policy -> {});
     }
     
     
     public void menu(Policy policy) {
         int index = 0;
-        while (index != 8) {
+        while (index != 5) {
             menu.view();
             index = menu.select(policy);
         }
@@ -87,6 +87,7 @@ public class EditPolicyConsole {
         System.out.println("<Insert fancy available rider retrieval here>");
         Input.as("===== Riders =====\n1. Additional rider", "Enter the index: ", Ints::tryParse, i -> i == 1);
         policy.setCoverage(new AdditionalRider(policy.getCoverage()));
+        System.out.println("Added rider\n");
     }
     
     private void pay(Policy policy) {
