@@ -1,1 +1,0 @@
-"C:/Program Files/Java/jre1.8.0_144/bin/java.exe" -jar ./target/Provident-0.0.1-SNAPSHOT-shaded.jar
