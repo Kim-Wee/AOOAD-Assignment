@@ -64,7 +64,7 @@ public class CustomerConsole {
     
     private void pay(Customer customer) {
         List<Policy> policies = Display.view("with oustanding premiums", customer.getPolicies().values(), policy -> policy.getPremium() != 0);
-        if (!policies.isEmpty()) {
+        if (policies.isEmpty()) {
             System.out.println("No outstanding premiums");
             return;
         }
