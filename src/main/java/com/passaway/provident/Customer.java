@@ -21,15 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.client;
+package com.passaway.provident;
 
-import com.passaway.provident.PolicyHolder;
 import com.passaway.provident.policy.Policy;
 
 import java.util.*;
 
+import static java.util.UUID.randomUUID;
 
-public class Client implements PolicyHolder {
+
+public class Customer {
     
     private UUID id;
     private String name;
@@ -38,27 +39,27 @@ public class Client implements PolicyHolder {
     private Map<UUID, Policy> policies;
     
     
-    public Client(String name, String address, String email) {
-        this(UUID.randomUUID(), name, address, email, new HashMap<>());
+    public Customer(String name, String address, String email) {
+        this(randomUUID(), name, address, email, new HashMap<>());
     }
     
-    public Client(UUID id, String name, String address, String email, Map<UUID, Policy> policies) {
+    public Customer(UUID id, String name, String address, String email, Map<UUID, Policy> policies) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.email = email;
         this.policies = policies;
     }
-
+    
     
     public UUID getID() {
         return id;
     }
-
+    
     public String getName() {
         return name;
     }
-
+    
     public String getAddress() {
         return address;
     }
@@ -66,8 +67,7 @@ public class Client implements PolicyHolder {
     public String getEmail() {
         return email;
     }
-
-    @Override
+    
     public Map<UUID, Policy> getPolicies() {
         return policies;
     }

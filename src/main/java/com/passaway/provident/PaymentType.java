@@ -21,41 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.states;
-
-import com.passaway.provident.policy.*;
-import com.passaway.provident.policy.coverages.Coverage;
-
-import java.util.Optional;
+package com.passaway.provident;
 
 
-public abstract class Status {
+public enum PaymentType {
     
-    private String information;
-    
-    
-    public Status(String information) {
-        this.information = information;
-    }
-    
-    
-    public abstract void pay(Policy policy, Payment payment);
-    
-    public abstract void charge(Policy policy, Coverage coverage);
-        
-    public abstract Optional<Payout> claim(Policy policy, Coverage coverage, String context);
-    
-    public void cancelledByAgent(Policy policy) {
-        policy.setStatus(Terminated.AGENT);
-    }
-    
-    public void cancelledByClient(Policy policy) {
-        policy.setStatus(Terminated.CLIENT);
-    }
-    
-    
-    public String getInformation() {
-        return information;
-    }
+    CHEQUE, CREDIT_CARD
     
 }

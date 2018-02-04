@@ -21,50 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.states;
+package com.passaway.provident.policy.statuses;
 
-import com.passaway.provident.policy.*;
-import com.passaway.provident.policy.coverages.Coverage;
+import com.passaway.provident.Payment;
+import com.passaway.provident.policy.Policy;
 
 import java.util.Optional;
 
 
-public class Active extends Status {
+public interface Status {
     
-    public Active() {
-        this("This policy is current active");
-    }
+    public void charge(Policy policy);
     
-    public Active(String information) {
-        super(information);
-    }
-    
-    
-    @Override
-    public void pay(Policy policy, Payment payment) {
-        policy.setPremium(policy.getPremium() - payment.getAmount());
-        policy.getPayments().put(payment.getID(), payment);
-    }
+    public void pay(Policy policy, Payment payment);
 
-    @Override
-    public Optional<Payout> claim(Policy policy, Coverage coverage, String context) {
-        Optional<Payout> payout = coverage.claim(policy, context);
-        
-        payout.ifPresent(p -> { 
-            if (p.isCompletelyPaidOut()) {
-                policy.setStatus(Terminated.PAID_OUT);
-            }
-        });
-        
-        return payout;
-    }
-
-    @Override
-    public void charge(Policy policy, Coverage coverage) {
+    public Optional<Double> payout(Policy policy);
+    
+    
+    public default void lapse(Policy policy) {
         if (policy.getPremium() > 0) {
-            policy.setStatus(new Lapsed());
+            System.out.println("Set policy status as lapsed\n");
+            policy.setStatus(Lapsed.INSTANCE);
+            
+        } else {
+            System.out.println("Policy cannot be set as lapsed\n");
         }
-       coverage.charge(policy);
+    }
+    
+    public default void terminate(Policy policy) {
+        System.out.println("Terminated policy\n");
+        policy.setStatus(Terminated.INSTANCE);
     }
     
 }

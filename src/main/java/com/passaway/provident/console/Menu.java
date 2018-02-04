@@ -21,48 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy;
+package com.passaway.provident.console;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Consumer;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 
-public class Payment {    
+public class Menu<T> {
     
-    private UUID id;
-    private Policy policy;
-    private PaymentType type;
-    private LocalDateTime date;
-    private double amount;
+    private String title;
+    private Map<Integer, Pair<String, Consumer<T>>> options; 
     
     
-    public Payment(Policy policy, PaymentType type, double amount) {
-        this.id = UUID.randomUUID();
-        this.policy = policy;
-        this.type = type;
-        this.date = LocalDateTime.now();
-        this.amount = amount;
-    }
-
-    
-    public UUID getID() {
-        return id;
+    public Menu(String title) {
+        this.title = title;
+        options = new HashMap<>();
     }
     
-    public Policy getPolicy() {
-        return policy;
+    
+    public void view() {
+        System.out.println("===== " + title + " Menu =====");
+        options.forEach((index, option) -> System.out.println(index + ". " + option.getLeft()));
+        System.out.println("\n");
     }
-
-    public PaymentType getType() {
-        return type;
+    
+    public int select(T viewer) {
+        int index = Input.match("Please select an option: ", options::containsKey);
+        options.get(index).getRight().accept(viewer);
+        
+        return index;
     }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public double getAmount() {
-        return amount;
+    
+    
+    public void register(int index, String title, Consumer<T> consumer) {
+        options.put(index, Pair.of(title, consumer));
     }
     
 }

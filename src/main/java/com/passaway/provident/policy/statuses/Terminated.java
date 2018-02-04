@@ -21,25 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy.states;
+package com.passaway.provident.policy.statuses;
 
+import com.passaway.provident.Payment;
 import com.passaway.provident.policy.*;
-import com.passaway.provident.policy.coverages.Coverage;
 
 import java.util.Optional;
 
 
-public class Terminated extends Status {
+public class Terminated implements Status {
     
-    public static final Terminated AGENT = new Terminated("Policy has been terminated by the agent");
-    public static final Terminated CLIENT = new Terminated("Policy has been terminated by the client");
-    public static final Terminated PAID_OUT = new Terminated("Policy has been paid out");
+    public static final Terminated INSTANCE = new Terminated();
     
     
-    public Terminated(String information) {
-        super(information);
+    private Terminated() {}
+    
+    
+    @Override
+    public void charge(Policy policy) {
+        System.out.println("Policy has already been terminated");
     }
-    
     
     @Override
     public void pay(Policy policy, Payment payment) {
@@ -47,23 +48,18 @@ public class Terminated extends Status {
     }
 
     @Override
-    public Optional<Payout> claim(Policy policy, Coverage coverage, String context) {
+    public Optional<Double> payout(Policy policy) {
         System.out.println("Policy has already been terminated");
         return Optional.empty();
     }
-
+        
     @Override
-    public void charge(Policy policy, Coverage coverage) {
-        System.out.println("Policy has already been terminated");
-    }
-
-    @Override
-    public void cancelledByAgent(Policy policy) {
+    public void lapse(Policy policy) {
         System.out.println("Policy has already been terminated");
     }
     
     @Override
-    public void cancelledByClient(Policy policy) {
+    public void terminate(Policy policy) {
         System.out.println("Policy has already been terminated");
     }
     

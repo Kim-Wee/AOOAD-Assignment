@@ -21,11 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy;
+package com.passaway.provident.policy.statuses;
+
+import com.passaway.provident.Payment;
+import com.passaway.provident.policy.*;
+
+import java.util.Optional;
 
 
-public enum PaymentType {
+public class Lapsed implements Status {
     
-    CHEQUE, CREDIT_CARD
+    public static final Lapsed INSTANCE = new Lapsed();
+    
+    
+    private Lapsed() {}
+
+    
+    @Override
+    public void charge(Policy policy) {
+        policy.getCoverage().charge(policy);
+    }
+    
+    @Override
+    public void pay(Policy policy, Payment payment) {
+        policy.setPremium(policy.getPremium() - payment.getAmount());
+        if (policy.getPremium() <= 0) {
+            System.out.println("Policy is no longer lapsed");
+            policy.setStatus(Active.INSTANCE);
+        }
+    }
+
+    @Override
+    public Optional<Double> payout(Policy policy) {
+        System.out.println("Policy canot be claimed while lapsed");
+        return Optional.empty();
+    }
+    
+    @Override
+    public void lapse(Policy policy) {
+        System.out.println("Policy is already lapsed");
+    }
     
 }

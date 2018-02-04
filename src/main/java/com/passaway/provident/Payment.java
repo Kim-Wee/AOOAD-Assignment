@@ -21,31 +21,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.passaway.provident.policy;
+package com.passaway.provident;
+
+import com.passaway.provident.policy.Policy;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 
-public class Payout {
+public class Payment {    
     
+    private UUID id;
+    private LocalDateTime date;
+    private Policy policy;
     private double amount;
-    private boolean complete;
+    private PaymentType type;
     
     
-    public Payout(double amount, boolean complete) {
+    public Payment(Policy policy, PaymentType type, double amount) {
+        this.id = UUID.randomUUID();
+        this.policy = policy;
+        this.type = type;
+        this.date = LocalDateTime.now();
         this.amount = amount;
-        this.complete = complete;
+    }
+
+    
+    public UUID getID() {
+        return id;
     }
     
+    public LocalDateTime getDate() {
+        return date;
+    }
+    
+    public Policy getPolicy() {
+        return policy;
+    }
     
     public double getAmount() {
         return amount;
     }
-    
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }    
-    
-    public boolean isCompletelyPaidOut() {
-        return complete;
+
+    public PaymentType getType() {
+        return type;
     }
     
 }

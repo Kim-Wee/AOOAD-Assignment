@@ -23,69 +23,39 @@
  */
 package com.passaway.provident;
 
-import com.passaway.provident.client.Client;
-import com.passaway.provident.client.Clients;
-import com.passaway.provident.employees.*;
-import com.passaway.provident.policy.Policies;
+import com.passaway.provident.agent.*;
+import com.passaway.provident.console.*;
 
 import java.util.*;
-
-import static java.util.Arrays.asList;
 
 
 public class Main {
     
-    private static Controller controller;
-    private static Set<String> roles;
+    private static Map<UUID, Agent> agents = new HashMap<>();
+    private static Map<UUID, Customer> customers = new HashMap<>();
     
     
-    public static void main(String... args) {
-        initialise();
-        while (true) {
-            String role = Input.match("Enter login type: ", "Invalid login type", value -> roles.contains(value.toLowerCase()));
-            Input.match("Enter ID: ", "No such person with ID found", value -> {
-                switch (role.toLowerCase()) {
-                    case "admin":
-                        controller.view();
-                        return true;
-
-                    case "agent":
-                        Agent agent = controller.getAgents().getAgents().get(UUID.fromString(value));
-                        if (agent != null) {
-                            controller.view(agent);
-                            return true;
-
-                        } else {
-                            return false;
-                        }
-
-                    case "client":
-                        Client client = controller.getClients().getClients().get(UUID.fromString(value));
-                        if (client != null) {
-                            controller.view(client);
-                            return true;
-
-                        } else {
-                            return false;
-                        }
-
-                    case "exit":
-                        return true;
-
-                    default:
-                        return false;
-                }
-            });
-        }
+    public static void main(String[] args) {        
+        register(new Agent("Francis Kok", "Senior agent", Pay.SENIOR));
+        register(new Agent("Bob", "Standard agent", Pay.STANDARD));
+        register(new Agent("Lim Ko Pi", "Junior agent", Pay.JUNIOR));
+        
+        register(new Customer("John Doe", "Over the rainbow", "doe@gmail.com"));
+        register(new Customer("Douglas Adams", "The galaxy", "douglas@gmail.com"));
+        register(new Customer("ED iot", "Idk", "idk@gmail.com"));
+        
+        new LoginConsole(new AgentConsole(agents, customers), new CustomerConsole(agents, customers), agents, customers).login();
     }
     
     
-    private static void initialise() {
-        controller = new Controller(null, null, null);
-        controller.setAgents(new Agents(controller, new HashMap<>()));
-        controller.setClients(new Clients(controller, new HashMap<>()));
-        controller.setPolicies(new Policies(controller));
-        roles = new HashSet<>(asList("admin", "agent", "client", "exit"));
+    public static void register(Agent agent) {
+        agents.put(agent.getID(), agent);
+        System.out.println("Generated agent: " + agent.getInformation() + " with ID: " + agent.getID() + "\n");
+    }
+    
+    public static void register(Customer customer) {
+        customers.put(customer.getID(), customer);
+        System.out.println("Generated customer: " + customer.getName() + " with ID: " + customer.getID() + "\n");
     }
     
 }
