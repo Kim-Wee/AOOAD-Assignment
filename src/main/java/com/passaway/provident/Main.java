@@ -50,12 +50,12 @@ public class Main {
     
     public static void register(Agent agent) {
         agents.put(agent.getID(), agent);
-        System.out.println("Generated " + agent.getInformation() + " with ID: " + agent.getID() + "\n");
+        System.out.println("Generated agent: " + agent.getInformation() + " with ID: " + agent.getID() + "\n");
     }
     
     public static void register(Customer customer) {
         customers.put(customer.getID(), customer);
-        System.out.println("Generated " + customer.getName() + " with ID " + customer.getID() + "\n");
+        System.out.println("Generated customer: " + customer.getName() + " with ID: " + customer.getID() + "\n");
     }
     
 }

@@ -39,10 +39,17 @@ public interface Status {
     
     
     public default void lapse(Policy policy) {
-        policy.setStatus(Lapsed.INSTANCE);
+        if (policy.getPremium() > 0) {
+            System.out.println("Set policy status as lapsed\n");
+            policy.setStatus(Lapsed.INSTANCE);
+            
+        } else {
+            System.out.println("Policy cannot be set as lapsed\n");
+        }
     }
     
     public default void terminate(Policy policy) {
+        System.out.println("Terminated policy\n");
         policy.setStatus(Terminated.INSTANCE);
     }
     

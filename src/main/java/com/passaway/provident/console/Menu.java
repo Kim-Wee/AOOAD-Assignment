@@ -48,7 +48,7 @@ public class Menu<T> {
     }
     
     public int select(T viewer) {
-        int index = Input.match("Please select an option", options::containsKey);
+        int index = Input.match("Please select an option: ", options::containsKey);
         options.get(index).getRight().accept(viewer);
         
         return index;

@@ -41,7 +41,7 @@ public class Display {
             Policy policy = policies.get(i);
             System.out.println("Policy ID: " + policy.getID() + " Type: " + policy.getType() + " Client ID: " + policy.getCustomer().getID() + " Oustanding premium: " + policy.getPremium());
         }
-        
+        System.out.println("\n");
         return policies;
     }
     

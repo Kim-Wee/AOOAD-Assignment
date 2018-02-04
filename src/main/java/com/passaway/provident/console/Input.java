@@ -42,8 +42,8 @@ public class Input {
     }
     
     public static <T> T as(String message, String error, Function<String, T> function) {
-        System.out.println(message);
         while (true) {
+            System.out.println(message);
             T value = function.apply(scanner.nextLine());
             if (value == null) {
                 System.out.println(error + "\n");
@@ -55,8 +55,8 @@ public class Input {
     }
     
     public static <T> T as(String message, String error, Function<String, T> function, Predicate<T> predicate) {
-        System.out.println(message);
         while (true) {
+            System.out.println(message);
             T value = function.apply(scanner.nextLine());
             if (value != null && predicate.test(value)) {
                 return value;
@@ -72,8 +72,8 @@ public class Input {
     }
     
     public static int between(String message, int min, int max, Predicate<Integer> predicate) {
-        System.out.println(message);
         while (true) {
+            System.out.println(message);
             Integer index = Ints.tryParse(scanner.nextLine());
             if (index != null && index >= min && index < max && predicate.test(index)) {
                 return index;
@@ -85,8 +85,8 @@ public class Input {
     }
     
     public static String match(String message, String error, Predicate<String> predicate) {
-        System.out.println(message);
         while (true) {
+            System.out.println(message);
             String value = scanner.nextLine();
             if (predicate.test(value)) {
                 return value;
@@ -98,8 +98,8 @@ public class Input {
     }
         
     public static int match(String message, Predicate<Integer> predicate) {
-        System.out.println(message);
         while (true) {
+            System.out.println(message);
             Integer value = Ints.tryParse(scanner.nextLine());
             if (value != null && predicate.test(value)) {
                 return value;

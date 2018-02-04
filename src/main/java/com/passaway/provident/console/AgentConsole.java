@@ -39,6 +39,7 @@ public class AgentConsole {
     private Map<UUID, Agent> agents;
     private Map<UUID, Customer> customers;
     private Menu<Agent> menu;
+    private EditPolicyConsole edit;
     
     
     public AgentConsole(Map<UUID, Agent> agents, Map<UUID, Customer> customers) {
@@ -50,6 +51,7 @@ public class AgentConsole {
         menu.register(3, "Edit policy", this::editPolicy);
         menu.register(4, "Remind customer(s)", this::remind);
         menu.register(5, "Exit", agent -> {});
+        edit = new EditPolicyConsole();
     }
     
     
@@ -66,7 +68,7 @@ public class AgentConsole {
     }
     
     private void createPolicy(Agent agent) {
-        Policy.Builder builder = Policy.builder().agent(agent).customer(Input.as("Enter ID of customer", "Invalid ID", customers::get, customers::containsKey));
+        Policy.Builder builder = Policy.builder().agent(agent).customer(Input.as("Enter ID of customer: ", "Invalid ID", id -> customers.get(UUID.fromString(id)), customers::containsKey));
         
         Input.match("Enter the policy type (CAR, MEDICAL, TRAVEL)", "Invalid input", value -> {
             switch (value.toLowerCase()) {
@@ -112,75 +114,12 @@ public class AgentConsole {
     
     private void editPolicy(Agent agent) {
         List<Policy> policies = Display.view("", agent.getPolicies().values(), policy -> true);
-        while (true) {
-            boolean add = Input.as("Add rider(s) to policies?", "Invalid input", value -> {
-                switch (value.toLowerCase()) {
-                    case "yes":
-                        return true;
-                        
-                    case "no":
-                        return false;
-                    
-                    default:
-                        return null;
-                }
-            });
+        if (!policies.isEmpty()) {
+            Policy policy = policies.get(Input.between("Enter index of policy", 0, policies.size()) - 1);
+            edit.menu(policy);
             
-            if (add) {
-                Policy policy = policies.get(Input.between("Enter index of policy", 0, policies.size()) - 1);
-                
-                Input.match("===== Riders =====\n1. Additional rider", "Enter the index or 'done' to exit", value -> {
-                    if (value.equalsIgnoreCase("done")) {
-                        return true;
-                    }
-
-                    Integer index = Ints.tryParse(value);
-                    if (index != null && index > 0 && index <= 1) {
-                        policy.setCoverage(policy.getCoverage());
-                        System.out.println("Added rider");
-                    }
-
-                    return false;
-                });
-                
-            } else {
-                break;
-            }
-        }
-        
-        while (true) {
-            boolean pay = Input.as("Pay policies with outstanding premiums?", "Invalid input", value -> {
-                switch (value.toLowerCase()) {
-                    case "yes":
-                        return true;
-                        
-                    case "no":
-                        return false;
-                    
-                    default:
-                        return null;
-                }
-            });
-            
-            if (pay) {
-                Policy policy = Input.as("Enter index of policy", "Invalid input", value -> {
-                    Integer index = Ints.tryParse(value);
-                    Policy p;
-                    if (index != null && index > 0 && index <= policies.size() && (p = policies.get(index - 1)).getPremium() != 0) {
-                        return p;
-
-                    } else {
-                        return null;
-                    }
-                });
-                double amount = Input.as("Enter amount: ", "Invalid amount", Doubles::tryParse);
-                
-                policy.pay(new Payment(policy, PaymentType.CHEQUE, amount));
-                System.out.println("Payment has been made");
-                
-            } else {
-                break;
-            }
+        } else {
+            System.out.println("No policies found\n");
         }
     }
     
