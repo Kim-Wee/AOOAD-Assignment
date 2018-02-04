@@ -33,7 +33,6 @@ import com.passaway.provident.policy.coverages.*;
 import java.util.*;
 
 
-
 public class AgentConsole {
     
     private Map<UUID, Agent> agents;
